@@ -13,7 +13,6 @@
 GLFWApplication::GLFWApplication() {
     assert(s_Instance == nullptr);
     s_Instance = this;
-    m_Scene = new Scene();
 }
 
 void GLFWApplication::run() {
@@ -23,12 +22,16 @@ void GLFWApplication::run() {
     Renderer::init();
 
     m_TimeStep = 1.0f / 60.0f;
+    m_Scene = new Scene();
     m_Scene->start();
 
     while (!glfwWindowShouldClose(m_Window)) {
         glfwPollEvents();
 
         m_Scene->update(m_TimeStep);
+
+        glEnable(GL_DEPTH_TEST);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         m_Scene->render();
 
         glfwSwapBuffers(m_Window);

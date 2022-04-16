@@ -7,12 +7,22 @@
 #include "Renderer/Renderer.hpp"
 
 void Scene::start() {
-    create_basic();
+    auto basic = create_basic("Basic");
+    auto& sprite = basic.get<SpriteComponent>();
+    sprite.m_Color = { 0.1f, 0.5f, 0.1f, 1.0f };
+    auto& transform = basic.get<TransformComponent>();
+    transform.m_Position = { 1.0f, 0.0f };
+
+    auto basic2 = create_basic("Basic2");
+    auto& sprite2 = basic2.get<SpriteComponent>();
+    sprite2.m_Color = { 1.0f, 0.3f, 0.7f, 1.0f };
+    auto& transform2 = basic2.get<TransformComponent>();
+    transform2.m_Position = { 0.0f, 1.0f };
 }
 
 void Scene::update(float deltaTime) {
     m_Registry.view<TransformComponent>().each([&deltaTime] (auto entity, TransformComponent& tc) {
-        tc.m_Rotation += deltaTime * 15.0f;
+        tc.m_Rotation += deltaTime * 1.0f;
     });
 }
 

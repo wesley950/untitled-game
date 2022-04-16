@@ -5,7 +5,7 @@ binary_folder = ""
 
 
 def main() -> None:
-    embedded_shaders_header_path = os.path.join(binary_folder, "../src/Generated/GL3/Shaders.hpp")
+    embedded_shaders_header_path = os.path.join(binary_folder, "../src/Generated/GL3/Shaders.hpp.in")
     embedded_shaders_header_code = ""
     with open(embedded_shaders_header_path, "r") as file:
         embedded_shaders_header_code = file.read()

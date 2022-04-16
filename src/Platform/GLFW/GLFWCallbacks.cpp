@@ -3,12 +3,12 @@
 //
 
 #include "GLFWCallbacks.hpp"
+#include "Renderer/Renderer.hpp"
 #include <glad/glad.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // WorldRenderer::ResizeFramebuffer(width, height);
+    Renderer::set_viewport_size({ (float)width, (float) height });
 }
 
 void key_callback(GLFWwindow* window, int keycode, int scancode, int action, int mods) {

@@ -71,7 +71,7 @@ struct SpriteComponent {
 
     SpriteComponent() {
         m_Size = { 1.0f, 1.0f };
-        m_Center = { 0.0f, 0.0f };
+        m_Center = { 0.5f, 0.5f };
         m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
     }
 

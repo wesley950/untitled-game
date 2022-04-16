@@ -5,6 +5,7 @@
 #ifndef UNTITLED_RENDERER_HPP
 #define UNTITLED_RENDERER_HPP
 
+#include "Shader.hpp"
 #include "VertexArray.hpp"
 
 #include <vector>
@@ -27,6 +28,14 @@ public:
         std::vector<VertexArray::Vertex> vertices {};
         std::vector<uint32_t> indices {};
         uint32_t baseIndex = 0;
+
+        glm::mat4 projectionViewMat;
+        glm::vec2 cameraPosition;
+        glm::vec2 cameraZoom;
+        glm::vec2 viewportSize;
+
+        Shader* shader = nullptr;
+        VertexArray* vertexArray = nullptr;
     };
 
     static void init();
@@ -36,6 +45,11 @@ public:
     static void prepare(RenderMode mode);
     static void draw_quad(const glm::mat4& transform, const glm::vec2& size, const glm::vec2& center, const glm::vec4& color);
     static void present();
+
+    static void set_viewport_size(const glm::vec2& viewportSize);
+
+private:
+    static void calculate_projection_view_matrix();
 
 private:
     static State s_State;
