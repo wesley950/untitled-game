@@ -4,7 +4,9 @@
 
 #include "GLFWApplication.hpp"
 #include "GLFWCallbacks.hpp"
+
 #include "Renderer/Renderer.hpp"
+#include "Input/Input.hpp"
 
 #include <cassert>
 
@@ -19,6 +21,7 @@ void GLFWApplication::run() {
     init_glfw();
     gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
+    Input::init();
     Renderer::init();
 
     m_TimeStep = 1.0f / 60.0f;

@@ -9,8 +9,12 @@ execute_process(COMMAND python3 ${PROJECT_SOURCE_DIR}/tools/generate_shader_head
 set(CORE_FILES
         src/Core/Application.hpp src/Core/Application.cpp
         src/Core/UUID.cpp src/Core/UUID.hpp)
+set(INPUT_FILES
+        src/Input/Input.cpp src/Input/Input.hpp)
 set(RENDERER_FILES
-        src/Renderer/Renderer.cpp src/Renderer/Renderer.hpp src/Renderer/VertexArray.cpp src/Renderer/VertexArray.hpp src/Renderer/Shader.cpp src/Renderer/Shader.hpp)
+        src/Renderer/Renderer.cpp src/Renderer/Renderer.hpp
+        src/Renderer/VertexArray.cpp src/Renderer/VertexArray.hpp
+        src/Renderer/Shader.cpp src/Renderer/Shader.hpp)
 set(SCENE_FILES
         src/Scene/Components.hpp
         src/Scene/Scene.cpp src/Scene/Scene.hpp)
@@ -20,12 +24,13 @@ set(GLFW_PLATFORM_FILES
         src/Platform/GLFW/GLFWApplication.cpp src/Platform/GLFW/GLFWApplication.hpp
         src/Platform/GLFW/GLFWCallbacks.hpp src/Platform/GLFW/GLFWCallbacks.cpp)
 set(GL3_PLATFORM_FILES
-        src/Platform/GL3/GL3Shader.cpp src/Platform/GL3/GL3Shader.hpp src/Platform/GL3/GL3VertexArray.cpp src/Platform/GL3/GL3VertexArray.hpp)
+        src/Platform/GL3/GL3Shader.cpp src/Platform/GL3/GL3Shader.hpp
+        src/Platform/GL3/GL3VertexArray.cpp src/Platform/GL3/GL3VertexArray.hpp)
 set(GLAD_FILES
-        thirdparty/glad/glad.c thirdparty/glad/glad.h thirdparty/glad/khrplatform.h src/Scene/Scene.cpp src/Scene/Scene.hpp src/Renderer/VertexArray.cpp src/Renderer/VertexArray.hpp)
+        thirdparty/glad/glad.c thirdparty/glad/glad.h thirdparty/glad/khrplatform.h)
 add_executable(untitled
         src/Main.cpp
-        ${CORE_FILES} ${RENDERER_FILES} ${SCENE_FILES}
+        ${CORE_FILES} ${INPUT_FILES} ${RENDERER_FILES} ${SCENE_FILES}
         ${GENERATED_FILES}
         ${GLFW_PLATFORM_FILES} ${GL3_PLATFORM_FILES}
         ${GLAD_FILES})
