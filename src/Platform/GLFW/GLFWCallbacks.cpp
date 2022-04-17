@@ -62,7 +62,7 @@ static Input::KeyCode glfwToKC(int glfwKeyCode) {
         }
     }
 
-    return Input::KeyCode::UNDEFINED;
+    return Input::KeyCode::KEY_UNDEFINED;
 }
 
 void key_callback(GLFWwindow* window, int keycode, int scancode, int action, int mods) {

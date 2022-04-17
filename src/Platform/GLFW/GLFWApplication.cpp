@@ -29,6 +29,8 @@ void GLFWApplication::run() {
     m_Scene->start();
 
     while (!glfwWindowShouldClose(m_Window)) {
+        // Must update the input *before* polling again
+        Input::update();
         glfwPollEvents();
 
         m_Scene->update(m_TimeStep);
