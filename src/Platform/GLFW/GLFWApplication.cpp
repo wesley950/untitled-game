@@ -8,6 +8,7 @@
 #include "Renderer/Renderer.hpp"
 #include "Input/Input.hpp"
 
+#include <chrono>
 #include <cassert>
 
 #include <glad/glad.h>
@@ -28,12 +29,25 @@ void GLFWApplication::run() {
     m_Scene = new Scene();
     m_Scene->start();
 
+    float deltaTime = 0.0f;
+    float accumulator = 0.0f;
+    auto timeAtLastFrame = std::chrono::steady_clock::now();
+
     while (!glfwWindowShouldClose(m_Window)) {
         // Must update the input *before* polling again
         Input::update();
         glfwPollEvents();
 
-        m_Scene->update(m_TimeStep);
+        auto now = std::chrono::steady_clock::now();
+        std::chrono::duration<float> duration = now - timeAtLastFrame;
+        timeAtLastFrame = now;
+        deltaTime = duration.count();
+
+        while (accumulator >= m_TimeStep) {
+            m_Scene->update(m_TimeStep);
+            accumulator -= m_TimeStep;
+        }
+        accumulator += deltaTime;
 
         glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -58,7 +72,7 @@ void GLFWApplication::init_glfw() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     m_Window = glfwCreateWindow(1280, 720, "untitled", nullptr, nullptr);
     glfwMakeContextCurrent(m_Window);
-    glfwSwapInterval(1);
+    glfwSwapInterval(0);
 
     glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
     glfwSetKeyCallback(m_Window, key_callback);

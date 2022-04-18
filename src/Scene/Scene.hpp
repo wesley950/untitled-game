@@ -8,6 +8,7 @@
 #include <string>
 
 #include <entt/entt.hpp>
+#include <box2d/box2d.h>
 
 class Scene {
 public:
@@ -22,7 +23,16 @@ public:
     entt::handle create_basic(const std::string& tag = "Basic Actor");
 
 private:
+    void populate();
+
+    void create_player();
+    void update_player(float deltaTime);
+
+private:
     entt::registry m_Registry {};
+    entt::handle m_Player {};
+
+    b2World* m_PhysicsWorld = nullptr;
 };
 
 

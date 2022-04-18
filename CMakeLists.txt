@@ -17,7 +17,7 @@ set(RENDERER_FILES
         src/Renderer/Shader.cpp src/Renderer/Shader.hpp)
 set(SCENE_FILES
         src/Scene/Components.hpp
-        src/Scene/Scene.cpp src/Scene/Scene.hpp)
+        src/Scene/Scene.cpp src/Scene/Scene.hpp src/Scene/Scene_Player.cpp)
 set(GENERATED_FILES
         ${PROJECT_BINARY_DIR}/src/Generated/GL3/Shaders.hpp)
 set(GLFW_PLATFORM_FILES
@@ -48,3 +48,7 @@ target_link_libraries(untitled glm::glm)
 
 add_subdirectory(thirdparty/entt)
 target_link_libraries(untitled EnTT::EnTT)
+
+set(BOX2D_BUILD_TESTBED OFF CACHE BOOL "" FORCE)
+add_subdirectory(thirdparty/box2d)
+target_link_libraries(untitled box2d)
