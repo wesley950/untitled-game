@@ -8,7 +8,7 @@ execute_process(COMMAND python3 ${PROJECT_SOURCE_DIR}/tools/generate_shader_head
 
 set(CORE_FILES
         src/Core/Application.hpp src/Core/Application.cpp
-        src/Core/UUID.cpp src/Core/UUID.hpp)
+        src/Core/UUID.cpp src/Core/UUID.hpp src/Core/MathUtils.hpp)
 set(INPUT_FILES
         src/Input/Input.cpp src/Input/Input.hpp)
 set(RENDERER_FILES
@@ -17,7 +17,7 @@ set(RENDERER_FILES
         src/Renderer/Shader.cpp src/Renderer/Shader.hpp)
 set(SCENE_FILES
         src/Scene/Components.hpp
-        src/Scene/Scene.cpp src/Scene/Scene.hpp src/Scene/Scene_Player.cpp)
+        src/Scene/Scene.cpp src/Scene/Scene.hpp src/Scene/Scene_Player.cpp src/Scene/Components_Player.hpp)
 set(GENERATED_FILES
         ${PROJECT_BINARY_DIR}/src/Generated/GL3/Shaders.hpp)
 set(GLFW_PLATFORM_FILES

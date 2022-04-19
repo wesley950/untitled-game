@@ -50,10 +50,6 @@ struct SpriteComponent {
     glm::vec4 m_Color { 1.0f, 1.0f, 1.0f, 1.0f };
 };
 
-struct PlayerComponent {
-    float m_MoveSpeed = 5.0f;
-};
-
 struct PhysicsBodyComponent {
     b2Body* m_Handle = nullptr;
     bool m_FixedPosition = false;

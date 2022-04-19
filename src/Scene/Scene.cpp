@@ -26,14 +26,14 @@ void Scene::start() {
 
     // Assign collision shapes to components
     {
-        m_Registry.view<PhysicsBodyComponent, PhysicsShapeListComponent>().each([] (auto entity, auto& pbc, auto& pslc) {
-            std::vector<PhysicsShapeListComponent::ShapeDefinition>& sdl = pslc.m_ShapeDefs;
+        m_Registry.view<PhysicsBodyComponent, PhysicsShapeListComponent>().each([](auto entity, auto &pbc, auto &pslc) {
+            std::vector<PhysicsShapeListComponent::ShapeDefinition> &sdl = pslc.m_ShapeDefs;
 
-            const auto create_collider_static = [] (b2Shape* shapePtr, b2Body* bodyPtr) {
+            const auto create_collider_static = [](b2Shape *shapePtr, b2Body *bodyPtr) {
                 return bodyPtr->CreateFixture(shapePtr, 0.0f);
             };
 
-            const auto create_collider_dyn_or_kin = [] (b2Shape* shapePtr, b2Body* bodyPtr) {
+            const auto create_collider_dyn_or_kin = [](b2Shape *shapePtr, b2Body *bodyPtr) {
                 b2FixtureDef fixtureDef;
                 fixtureDef.shape = shapePtr;
                 fixtureDef.density = 1.0f;
@@ -41,10 +41,9 @@ void Scene::start() {
                 return bodyPtr->CreateFixture(&fixtureDef);
             };
 
-            for (auto& shapeDef : sdl) {
+            for (auto &shapeDef: sdl) {
                 switch (shapeDef.m_Type) {
-                    case PhysicsShapeListComponent::ST_SPHERE:
-                    {
+                    case PhysicsShapeListComponent::ST_SPHERE: {
                         b2CircleShape circle;
                         circle.m_radius = glm::length(shapeDef.m_HalfExtents);
                         circle.m_p.Set(shapeDef.m_Center.x, shapeDef.m_Center.y);
@@ -57,10 +56,10 @@ void Scene::start() {
                         break;
                     }
 
-                    case PhysicsShapeListComponent::ST_RECTANGLE:
-                    {
+                    case PhysicsShapeListComponent::ST_RECTANGLE: {
                         b2PolygonShape rectangle;
-                        rectangle.SetAsBox(shapeDef.m_HalfExtents.x, shapeDef.m_HalfExtents.y, b2Vec2(shapeDef.m_Center.x, shapeDef.m_Center.y), 0.0f);
+                        rectangle.SetAsBox(shapeDef.m_HalfExtents.x, shapeDef.m_HalfExtents.y,
+                                           b2Vec2(shapeDef.m_Center.x, shapeDef.m_Center.y), 0.0f);
 
                         if (pbc.m_FixedPosition)
                             pslc.m_ShapeHandles.push_back(create_collider_static(&rectangle, pbc.m_Handle));
@@ -103,10 +102,22 @@ void Scene::update(float deltaTime) {
 void Scene::render() {
     Renderer::begin_frame();
     Renderer::prepare(Renderer::RenderMode::Y_SORTED_SPRITES);
-    m_Registry.view<TransformComponent, SpriteComponent>().each(
-            [](auto entity, TransformComponent &tc, SpriteComponent &sc) {
-                Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
-            });
+
+    // Get the group of render able entities and sort if back-to-front
+    // using the transform's y position...
+    auto renderables = m_Registry.group<TransformComponent, SpriteComponent>();
+    renderables.sort<TransformComponent>([](const TransformComponent &left, const TransformComponent &right) {
+        return left.m_Position.y > right.m_Position.y;
+    });
+    // ...Then submit them.
+    renderables.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
+        Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
+    });
+
+//    m_Registry.view<TransformComponent, SpriteComponent>().each(
+//            [](auto entity, TransformComponent &tc, SpriteComponent &sc) {
+//                Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
+//            });
     Renderer::present();
 }
 
@@ -129,14 +140,16 @@ void Scene::populate() {
 
     // creates a few static boxes
     {
-        for (int x = 0;x < 10;x++) {
+        for (int x = 0; x < 10; x++) {
             auto staticBox = create_basic();
-            auto& pbc = staticBox.emplace<PhysicsBodyComponent>(true);
-            auto& pslc = staticBox.emplace<PhysicsShapeListComponent>();
+            auto &pbc = staticBox.emplace<PhysicsBodyComponent>(true);
+            auto &pslc = staticBox.emplace<PhysicsShapeListComponent>();
 
-            pslc.m_ShapeDefs = {{ { 0.5f, 0.5f}, {0.0f, 0.0f}, (x % 3 != 0)? PhysicsShapeListComponent::ShapeType::ST_SPHERE : PhysicsShapeListComponent::ShapeType::ST_RECTANGLE }};
+            pslc.m_ShapeDefs = {{{0.5f, 0.5f}, {0.0f, 0.0f},
+                                 (x % 3 != 0) ? PhysicsShapeListComponent::ShapeType::ST_SPHERE
+                                              : PhysicsShapeListComponent::ShapeType::ST_RECTANGLE}};
 
-            auto& tc = staticBox.get<TransformComponent>();
+            auto &tc = staticBox.get<TransformComponent>();
             tc.m_Position.x = (float) x * 1.15f;
         }
     }
