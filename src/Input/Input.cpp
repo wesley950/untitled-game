@@ -17,19 +17,19 @@ void Input::init() {
     }
 
     // Sets up the actions
-    s_Actions[ActionName::MOVE_UP].keyCodes.push_back(KeyCode::W);
-    s_Actions[ActionName::MOVE_UP].keyCodes.push_back(KeyCode::UP);
-    s_Actions[ActionName::MOVE_DOWN].keyCodes.push_back(KeyCode::S);
-    s_Actions[ActionName::MOVE_DOWN].keyCodes.push_back(KeyCode::DOWN);
-    s_Actions[ActionName::MOVE_LEFT].keyCodes.push_back(KeyCode::A);
-    s_Actions[ActionName::MOVE_LEFT].keyCodes.push_back(KeyCode::LEFT);
-    s_Actions[ActionName::MOVE_RIGHT].keyCodes.push_back(KeyCode::D);
-    s_Actions[ActionName::MOVE_RIGHT].keyCodes.push_back(KeyCode::RIGHT);
+    s_Actions[ActionName::MOVE_UP].keyCodes = { KeyCode::W, KeyCode::UP };
+    s_Actions[ActionName::MOVE_DOWN].keyCodes = { KeyCode::S, KeyCode::DOWN };
+    s_Actions[ActionName::MOVE_LEFT].keyCodes = { KeyCode::A, KeyCode::LEFT };
+    s_Actions[ActionName::MOVE_RIGHT].keyCodes = { KeyCode::D, KeyCode::RIGHT };
+    s_Actions[ActionName::CYCLE_TOOL].keyCodes = { KeyCode::NUM_1 };
+    s_Actions[ActionName::CYCLE_ITEM].keyCodes = { KeyCode::NUM_2 };
+    s_Actions[ActionName::INTERACT].keyCodes = { KeyCode::F };
+    s_Actions[ActionName::USE].keyCodes = { KeyCode::E };
 }
 
 void Input::update() {
-    for (bool& jp : s_KeysJustPressed) {
-        jp = false;
+    for (bool& jpk : s_KeysJustPressed) {
+        jpk = false;
     }
 }
 

@@ -30,7 +30,6 @@ void GLFWApplication::run() {
     m_Scene->start();
 
     float deltaTime = 0.0f;
-    float accumulator = 0.0f;
     auto timeAtLastFrame = std::chrono::steady_clock::now();
 
     while (!glfwWindowShouldClose(m_Window)) {
@@ -43,14 +42,9 @@ void GLFWApplication::run() {
         timeAtLastFrame = now;
         deltaTime = duration.count();
 
-        while (accumulator >= m_TimeStep) {
-            m_Scene->update(m_TimeStep);
-            accumulator -= m_TimeStep;
-        }
-        accumulator += deltaTime;
+        m_Scene->update(deltaTime);
 
-        glEnable(GL_DEPTH_TEST);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
         m_Scene->render();
 
         glfwSwapBuffers(m_Window);

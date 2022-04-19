@@ -105,12 +105,12 @@ void Scene::render() {
 
     // Get the group of render able entities and sort if back-to-front
     // using the transform's y position...
-    auto renderables = m_Registry.group<TransformComponent, SpriteComponent>();
-    renderables.sort<TransformComponent>([](const TransformComponent &left, const TransformComponent &right) {
-        return left.m_Position.y > right.m_Position.y;
+    auto visibleEntities = m_Registry.group<TransformComponent, SpriteComponent>();
+    visibleEntities.sort<TransformComponent>([](const TransformComponent &left, const TransformComponent &right) {
+        return left.m_Position.y < right.m_Position.y;
     });
     // ...Then submit them.
-    renderables.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
+    visibleEntities.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
         Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
     });
 

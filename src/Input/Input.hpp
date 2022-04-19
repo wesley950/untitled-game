@@ -20,6 +20,7 @@ public:
     enum ActionName {
         ACTION_UNDEFINED = 0,
         MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT,
+        CYCLE_TOOL, CYCLE_ITEM, INTERACT, USE,
         ACTION_COUNT
     };
 
