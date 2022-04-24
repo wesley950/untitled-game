@@ -1,4 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
+  <component name="CidrRootsConfiguration">
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/assets" />
+      <file path="$PROJECT_DIR$/resources" />
+      <file path="$PROJECT_DIR$/thirdparty/box2d/.github" />
+      <file path="$PROJECT_DIR$/thirdparty/box2d/docs" />
+      <file path="$PROJECT_DIR$/thirdparty/box2d/extern" />
+      <file path="$PROJECT_DIR$/thirdparty/box2d/testbed" />
+      <file path="$PROJECT_DIR$/thirdparty/box2d/unit-test" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/build" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/cmake" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/conan" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/docs" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/natvis" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/scripts" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/src" />
+      <file path="$PROJECT_DIR$/thirdparty/entt/test" />
+      <file path="$PROJECT_DIR$/thirdparty/glfw/CMake" />
+      <file path="$PROJECT_DIR$/thirdparty/glfw/deps" />
+      <file path="$PROJECT_DIR$/thirdparty/glfw/docs" />
+      <file path="$PROJECT_DIR$/thirdparty/glfw/examples" />
+      <file path="$PROJECT_DIR$/thirdparty/glfw/tests" />
+      <file path="$PROJECT_DIR$/thirdparty/glm/cmake" />
+      <file path="$PROJECT_DIR$/thirdparty/glm/doc" />
+      <file path="$PROJECT_DIR$/thirdparty/glm/test" />
+      <file path="$PROJECT_DIR$/thirdparty/glm/util" />
+      <file path="$PROJECT_DIR$/thirdparty/stb/data" />
+      <file path="$PROJECT_DIR$/thirdparty/stb/deprecated" />
+      <file path="$PROJECT_DIR$/thirdparty/stb/docs" />
+      <file path="$PROJECT_DIR$/thirdparty/stb/tests" />
+      <file path="$PROJECT_DIR$/thirdparty/stb/tools" />
+      <file path="$PROJECT_DIR$/tools" />
+    </excludeRoots>
+  </component>
 </project>
