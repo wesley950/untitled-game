@@ -38,7 +38,7 @@ struct TransformComponent {
     glm::vec2 m_Scale { 1.0f, 1.0f };
     float m_Rotation = 0.0;
 
-    glm::mat4 get_transformation() const {
+    [[nodiscard]] glm::mat4 get_transformation() const {
         glm::mat4 rotationMatrix = glm::toMat4(glm::quat(glm::vec3(0.0f, 0.0f, m_Rotation)));
         return glm::translate(glm::mat4(1.0f), glm::vec3(m_Position, 0.0f)) * rotationMatrix * glm::scale(glm::mat4(1.0f), glm::vec3(m_Scale, 1.0f));
     }
@@ -52,29 +52,12 @@ struct SpriteComponent {
 
 struct PhysicsBodyComponent {
     b2Body* m_Handle = nullptr;
-    bool m_FixedPosition = false;
 
     PhysicsBodyComponent() = default;
-
-    explicit PhysicsBodyComponent(bool fixedPosition) {
-        m_FixedPosition = fixedPosition;
-    }
 };
 
 struct PhysicsShapeListComponent {
-    enum ShapeType {
-        ST_RECTANGLE,
-        ST_SPHERE
-    };
-
-    struct ShapeDefinition {
-        glm::vec2 m_HalfExtents {};
-        glm::vec2 m_Center {};
-        ShapeType m_Type;
-    };
-
     std::vector<b2Fixture*> m_ShapeHandles {};
-    std::vector<ShapeDefinition> m_ShapeDefs {};
 
     PhysicsShapeListComponent() = default;
 };

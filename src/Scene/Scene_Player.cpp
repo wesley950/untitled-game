@@ -12,6 +12,7 @@
 
 void Scene::create_player() {
     m_Player = create_basic("Player");
+    auto& tc = m_Player.get<TransformComponent>();
     auto &pc = m_Player.emplace<PlayerComponent>();
 
     {
@@ -21,9 +22,14 @@ void Scene::create_player() {
         sc.m_Color = { 0.0f, 0.0f, 1.0f, 1.0f };
         auto &pbc = m_Player.emplace<PhysicsBodyComponent>();
         auto &pslc = m_Player.emplace<PhysicsShapeListComponent>();
+
+        create_body(pbc, tc.m_Position, false);
+        add_circle_shape(pbc, pslc, 0.5f, b2Vec2(0.0f, -0.5f));
+        /*
         pslc.m_ShapeDefs = {
                 { {0.5f, 0.0f}, {0.0f, -0.5f}, PhysicsShapeListComponent::ShapeType::ST_SPHERE }
         };
+         */
     }
 
     // Create the interaction hit indicator

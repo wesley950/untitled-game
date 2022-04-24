@@ -36,8 +36,7 @@ void Renderer::begin_frame() {
     s_State.vertexArray->bind();
 }
 
-void Renderer::prepare(Renderer::RenderMode mode) {
-    s_State.renderMode = mode;
+void Renderer::prepare() {
     s_State.vertices.clear();
     s_State.indices.clear();
     s_State.baseIndex = 0;

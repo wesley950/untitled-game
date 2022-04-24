@@ -7,22 +7,17 @@
 
 #include "Shader.hpp"
 #include "VertexArray.hpp"
+#include "Texture.hpp"
 
 #include <vector>
+#include <unordered_map>
 #include <cstdint>
 
 #include <glm/glm.hpp>
 
 class Renderer {
 public:
-    enum RenderMode {
-        NONE,
-        Y_SORTED_SPRITES,
-        TILE_MAP
-    };
-
     struct State {
-        RenderMode renderMode = NONE;
         int32_t verticesDrawn = 0;
 
         std::vector<VertexArray::Vertex> vertices {};
@@ -42,7 +37,7 @@ public:
     static void shutdown();
 
     static void begin_frame();
-    static void prepare(RenderMode mode);
+    static void prepare();
     static void draw_quad(const glm::mat4& transform, const glm::vec2& size, const glm::vec2& center, const glm::vec4& color);
     static void present();
 

@@ -66,10 +66,6 @@ static Input::KeyCode glfwToKC(int glfwKeyCode) {
 }
 
 void key_callback(GLFWwindow* window, int keycode, int scancode, int action, int mods) {
-    if (action == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) != GLFW_RELEASE) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-
     if (action == GLFW_PRESS) {
         Input::KeyCode kc = glfwToKC(keycode);
         Input::notify_key_event(kc, true);

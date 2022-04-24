@@ -3,75 +3,13 @@
 //
 
 #include "Scene.hpp"
-#include "Components.hpp"
 #include "Renderer/Renderer.hpp"
 
 void Scene::start() {
     m_PhysicsWorld = new b2World(b2Vec2(0.0f, 0.0f));
 
-    // Create all the initial entities
+    // Create the initial entities
     populate();
-
-    // Assign physics bodies to components
-    {
-        m_Registry.view<PhysicsBodyComponent, TransformComponent>().each([this](auto entity, auto &pbc, auto &tc) {
-            // Create the physics body
-            b2BodyDef bodyDef;
-            bodyDef.type = (pbc.m_FixedPosition) ? b2_staticBody : b2_dynamicBody;
-            bodyDef.position.Set(tc.m_Position.x, tc.m_Position.y);
-            bodyDef.fixedRotation = true;
-            pbc.m_Handle = m_PhysicsWorld->CreateBody(&bodyDef);
-        });
-    }
-
-    // Assign collision shapes to components
-    {
-        m_Registry.view<PhysicsBodyComponent, PhysicsShapeListComponent>().each([](auto entity, auto &pbc, auto &pslc) {
-            std::vector<PhysicsShapeListComponent::ShapeDefinition> &sdl = pslc.m_ShapeDefs;
-
-            const auto create_collider_static = [](b2Shape *shapePtr, b2Body *bodyPtr) {
-                return bodyPtr->CreateFixture(shapePtr, 0.0f);
-            };
-
-            const auto create_collider_dyn_or_kin = [](b2Shape *shapePtr, b2Body *bodyPtr) {
-                b2FixtureDef fixtureDef;
-                fixtureDef.shape = shapePtr;
-                fixtureDef.density = 1.0f;
-                fixtureDef.friction = 0.3f;
-                return bodyPtr->CreateFixture(&fixtureDef);
-            };
-
-            for (auto &shapeDef: sdl) {
-                switch (shapeDef.m_Type) {
-                    case PhysicsShapeListComponent::ST_SPHERE: {
-                        b2CircleShape circle;
-                        circle.m_radius = glm::length(shapeDef.m_HalfExtents);
-                        circle.m_p.Set(shapeDef.m_Center.x, shapeDef.m_Center.y);
-
-                        if (pbc.m_FixedPosition)
-                            pslc.m_ShapeHandles.push_back(create_collider_static(&circle, pbc.m_Handle));
-                        else
-                            pslc.m_ShapeHandles.push_back(create_collider_dyn_or_kin(&circle, pbc.m_Handle));
-
-                        break;
-                    }
-
-                    case PhysicsShapeListComponent::ST_RECTANGLE: {
-                        b2PolygonShape rectangle;
-                        rectangle.SetAsBox(shapeDef.m_HalfExtents.x, shapeDef.m_HalfExtents.y,
-                                           b2Vec2(shapeDef.m_Center.x, shapeDef.m_Center.y), 0.0f);
-
-                        if (pbc.m_FixedPosition)
-                            pslc.m_ShapeHandles.push_back(create_collider_static(&rectangle, pbc.m_Handle));
-                        else
-                            pslc.m_ShapeHandles.push_back(create_collider_dyn_or_kin(&rectangle, pbc.m_Handle));
-
-                        break;
-                    }
-                }
-            }
-        });
-    }
 }
 
 void Scene::update(float deltaTime) {
@@ -101,7 +39,7 @@ void Scene::update(float deltaTime) {
 
 void Scene::render() {
     Renderer::begin_frame();
-    Renderer::prepare(Renderer::RenderMode::Y_SORTED_SPRITES);
+    Renderer::prepare();
 
     // Get the group of render able entities and sort if back-to-front
     // using the transform's y position...
@@ -114,10 +52,6 @@ void Scene::render() {
         Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
     });
 
-//    m_Registry.view<TransformComponent, SpriteComponent>().each(
-//            [](auto entity, TransformComponent &tc, SpriteComponent &sc) {
-//                Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
-//            });
     Renderer::present();
 }
 
@@ -142,15 +76,73 @@ void Scene::populate() {
     {
         for (int x = 0; x < 10; x++) {
             auto staticBox = create_basic();
-            auto &pbc = staticBox.emplace<PhysicsBodyComponent>(true);
+            auto &pbc = staticBox.emplace<PhysicsBodyComponent>();
             auto &pslc = staticBox.emplace<PhysicsShapeListComponent>();
-
-            pslc.m_ShapeDefs = {{{0.5f, 0.5f}, {0.0f, 0.0f},
-                                 (x % 3 != 0) ? PhysicsShapeListComponent::ShapeType::ST_SPHERE
-                                              : PhysicsShapeListComponent::ShapeType::ST_RECTANGLE}};
 
             auto &tc = staticBox.get<TransformComponent>();
             tc.m_Position.x = (float) x * 1.15f;
+
+            create_body(pbc, tc.m_Position, true);
+
+            if (x % 3 == 0) {
+                add_box_shape(pbc, pslc, b2Vec2(0.5f, 0.5f));
+            }
+            else {
+                add_circle_shape(pbc, pslc, 0.5f);
+            }
+
+            /*
+            pslc.m_ShapeDefs = {{{0.5f, 0.5f}, {0.0f, 0.0f},
+                                 (x % 3 != 0) ? PhysicsShapeListComponent::ShapeType::ST_SPHERE
+                                              : PhysicsShapeListComponent::ShapeType::ST_RECTANGLE}};
+            */
+
         }
     }
+}
+
+void Scene::create_body(PhysicsBodyComponent &physicsBody, const glm::vec2& initialPosition, bool fixedPosition) {
+    b2BodyDef bodyDef;
+    bodyDef.fixedRotation = true;
+    bodyDef.type = (fixedPosition)? b2_staticBody : b2_dynamicBody;
+    bodyDef.position.Set(initialPosition.x, initialPosition.y);
+    b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+    physicsBody.m_Handle = body;
+}
+
+void Scene::add_box_shape(PhysicsBodyComponent& physicsBody, PhysicsShapeListComponent &shapeList, const b2Vec2 &halfExtents, const b2Vec2 &center) {
+    bool fixedPosition = physicsBody.m_Handle->GetType() == b2_staticBody;
+    b2PolygonShape shape;
+    shape.SetAsBox(halfExtents.x, halfExtents.y, center, 0.0f);
+    b2Fixture* fixture;
+    if (fixedPosition) {
+        fixture = physicsBody.m_Handle->CreateFixture(&shape, 0.0f);
+    }
+    else {
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &shape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+        fixture = physicsBody.m_Handle->CreateFixture(&fixtureDef);
+    }
+    shapeList.m_ShapeHandles.push_back(fixture);
+}
+
+void Scene::add_circle_shape(PhysicsBodyComponent& physicsBody, PhysicsShapeListComponent &shapeList, float radius, const b2Vec2 &center) {
+    bool fixedPosition = physicsBody.m_Handle->GetType() == b2_staticBody;
+    b2CircleShape shape;
+    shape.m_p = center;
+    shape.m_radius = radius;
+    b2Fixture* fixture;
+    if (fixedPosition) {
+        fixture = physicsBody.m_Handle->CreateFixture(&shape, 0.0f);
+    }
+    else {
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &shape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+        fixture = physicsBody.m_Handle->CreateFixture(&fixtureDef);
+    }
+    shapeList.m_ShapeHandles.push_back(fixture);
 }

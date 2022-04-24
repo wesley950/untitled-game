@@ -10,3 +10,6 @@
 [submodule "thirdparty/box2d"]
 	path = thirdparty/box2d
 	url = https://github.com/erincatto/box2d
+[submodule "thirdparty/stb"]
+	path = thirdparty/stb
+	url = https://github.com/nothings/stb.git
