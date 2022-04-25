@@ -43,6 +43,7 @@ public:
 
     static void set_viewport_size(const glm::vec2& viewportSize);
     static void set_viewport_position(const glm::vec2& viewport_position);
+    static glm::vec2 screen_to_world_position(const glm::vec2& screen_pos);
 
 private:
     static void calculate_projection_view_matrix();

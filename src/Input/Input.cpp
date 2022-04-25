@@ -3,6 +3,7 @@
 //
 
 #include "Input.hpp"
+#include "Renderer/Renderer.hpp"
 
 #include <functional>
 
@@ -56,6 +57,10 @@ bool Input::is_key_just_pressed(KeyCode keyCode) {
 void Input::notify_key_event(KeyCode keyCode, bool pressed) {
     s_KeysPressed[keyCode] = pressed;
     s_KeysJustPressed[keyCode] = pressed;
+}
+
+glm::vec2 Input::mouse_world_position() {
+    return Renderer::screen_to_world_position(get_cursor_position());
 }
 
 bool Input::is_mouse_button_pressed(MouseButton button) {

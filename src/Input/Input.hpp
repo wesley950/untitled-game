@@ -47,6 +47,7 @@ public:
     static void notify_key_event(KeyCode keyCode, bool pressed);
 
     static glm::vec2 get_cursor_position() { return s_CursorPosition; }
+    static glm::vec2 mouse_world_position();
     static bool is_mouse_button_pressed(MouseButton button);
     static bool is_mouse_button_just_pressed(MouseButton button);
     static void update_cursor_position(const glm::vec2& new_cursor_pos);

@@ -3,6 +3,7 @@
 //
 
 #include "Renderer.hpp"
+#include "Input/Input.hpp"
 
 #include <glm/ext.hpp>
 
@@ -99,6 +100,18 @@ void Renderer::set_viewport_size(const glm::vec2 &viewportSize) {
 
 void Renderer::set_viewport_position(const glm::vec2& viewport_position) {
     s_State.cameraPosition = viewport_position;
+}
+
+glm::vec2 Renderer::screen_to_world_position(const glm::vec2& screen_pos) {
+    glm::vec2 normalized_device_coords = {
+            ((screen_pos.x / s_State.viewportSize.x) * 2.0f - 1.0f),
+            ((1.0f - (screen_pos.y / s_State.viewportSize.y)) * 2.0f - 1.0f)
+    };
+
+    glm::vec4 temp = { normalized_device_coords, 0.0f, 1.0f };
+    temp = temp / s_State.projectionViewMat;
+
+    return glm::vec2(temp.x, temp.y) + s_State.cameraPosition;
 }
 
 void Renderer::calculate_projection_view_matrix() {

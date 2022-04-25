@@ -73,8 +73,8 @@ void Scene::update_player(float deltaTime) {
         entt::handle pihi = pc.m_InteractionHitIndicator;
         auto& pihiTC = pihi.get<TransformComponent>();
 
-        pihiTC.m_Position = tc.m_Position + pc.m_LastNonZeroDirection;
-        pihiTC.m_Position = glm::floor(pihiTC.m_Position);
+        pihiTC.m_Position = Input::mouse_world_position();
+        pihiTC.m_Position = glm::floor(pihiTC.m_Position + glm::vec2(0.5f, 0.5f));
 
         // Tool and item cycling
         if (Input::is_action_just_pressed(Input::ActionName::CYCLE_TOOL)) {
