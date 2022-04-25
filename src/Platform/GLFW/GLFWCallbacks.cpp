@@ -75,3 +75,44 @@ void key_callback(GLFWwindow* window, int keycode, int scancode, int action, int
         Input::notify_key_event(kc, false);
     }
 }
+
+void cursor_position_callback(GLFWwindow* window, double x_pos, double y_pos) {
+    auto cursor_x = (float) x_pos;
+    auto cursor_y = (float) y_pos;
+    Input::update_cursor_position({ cursor_x, cursor_y });
+}
+
+static Input::MouseButton glfw_to_mb(int glfw_mb) {
+    switch (glfw_mb) {
+        case GLFW_MOUSE_BUTTON_LEFT:
+            return Input::MouseButton::MB_LEFT;
+
+        case GLFW_MOUSE_BUTTON_RIGHT:
+            return Input::MouseButton::MB_RIGHT;
+
+        case GLFW_MOUSE_BUTTON_MIDDLE:
+            return Input::MouseButton::MB_MIDDLE;
+
+        case GLFW_MOUSE_BUTTON_4:
+            return Input::MouseButton::MB_3;
+
+        case GLFW_MOUSE_BUTTON_5:
+            return Input::MouseButton::MB_4;
+
+        case GLFW_MOUSE_BUTTON_6:
+            return Input::MouseButton::MB_5;
+    }
+
+    return Input::MouseButton::MB_UNDEFINED;
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+    Input::MouseButton mb = glfw_to_mb(button);
+
+    if (action == GLFW_PRESS) {
+        Input::notify_mouse_button_event(mb, true);
+    }
+    else if (action == GLFW_RELEASE) {
+        Input::notify_mouse_button_event(mb, false);
+    }
+}

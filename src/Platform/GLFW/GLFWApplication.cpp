@@ -68,8 +68,15 @@ void GLFWApplication::init_glfw() {
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(0);
 
-    glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
-    glfwSetKeyCallback(m_Window, key_callback);
+    // GLFW callbacks
+    {
+        glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
+
+        glfwSetKeyCallback(m_Window, key_callback);
+
+        glfwSetCursorPosCallback(m_Window, cursor_position_callback);
+        glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
+    }
 }
 
 void GLFWApplication::shutdown_glfw() {

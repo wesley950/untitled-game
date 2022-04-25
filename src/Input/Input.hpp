@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include <glm/vec2.hpp>
+
 class Input {
 public:
     enum KeyCode {
@@ -17,16 +19,24 @@ public:
         KEY_COUNT
     };
 
+    enum MouseButton {
+        MB_UNDEFINED = 0,
+        MB_LEFT, MB_RIGHT, MB_MIDDLE, MB_3, MB_4, MB_5,
+        MB_COUNT
+    };
+
     enum ActionName {
         ACTION_UNDEFINED = 0,
         MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT,
-        CYCLE_TOOL, CYCLE_ITEM, INTERACT, USE,
+        CYCLE_TOOL, CYCLE_ITEM, USE,
         ACTION_COUNT
     };
 
     struct Action {
         // KeyCode's that activate this action
         std::vector<KeyCode> keyCodes;
+        // MouseButton's that activate this action
+        std::vector<MouseButton> m_MouseButtons;
     };
 
     static void init();
@@ -36,12 +46,23 @@ public:
     static bool is_key_just_pressed(KeyCode keyCode);
     static void notify_key_event(KeyCode keyCode, bool pressed);
 
+    static glm::vec2 get_cursor_position() { return s_CursorPosition; }
+    static bool is_mouse_button_pressed(MouseButton button);
+    static bool is_mouse_button_just_pressed(MouseButton button);
+    static void update_cursor_position(const glm::vec2& new_cursor_pos);
+    static void notify_mouse_button_event(MouseButton button, bool pressed);
+
     static bool is_action_pressed(ActionName actionName);
     static bool is_action_just_pressed(ActionName actionName);
 
 private:
     static bool s_KeysPressed[KeyCode::KEY_COUNT];
     static bool s_KeysJustPressed[KeyCode::KEY_COUNT];
+
+    static glm::vec2 s_CursorPosition;
+    static bool s_MouseButtonsPressed[MouseButton::MB_COUNT];
+    static bool s_MouseButtonsJustPressed[MouseButton::MB_COUNT];
+
     static Action s_Actions[ActionName::ACTION_COUNT];
 };
 
