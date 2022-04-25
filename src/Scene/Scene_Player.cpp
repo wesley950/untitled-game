@@ -16,7 +16,7 @@ void Scene::create_player() {
     auto &pc = m_Player.emplace<PlayerComponent>();
 
     {
-        auto& sc = m_Player.get<SpriteComponent>();
+        auto& sc = m_Player.emplace<SpriteComponent>();
         sc.m_Size = { 1.0f, 2.0f };
         sc.m_Center = { 0.5f, 1.0f };
         sc.m_Color = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -37,7 +37,7 @@ void Scene::create_player() {
         auto pihi = create_basic("Player Interaction Hit Indicator");
         pc.m_InteractionHitIndicator = pihi;
 
-        auto& sc = pihi.get<SpriteComponent>();
+        auto& sc = pihi.emplace<SpriteComponent>();
         sc.m_Color = { 1.0f, 0.0f, 0.0f, 0.5f };
     }
 }
@@ -145,7 +145,7 @@ void Scene::update_player(float deltaTime) {
                                 s_Crops.push_back(tilePosition);
                                 // Create carrot crop entity
                                 auto carrotCropEntity = create_basic("A Carrot Crop");
-                                auto& cceSC = carrotCropEntity.get<SpriteComponent>();
+                                auto& cceSC = carrotCropEntity.emplace<SpriteComponent>();
                                 cceSC.m_Color = { 1.0f, 1.0f, 0.0f, 1.0f };
                                 auto& cceTC = carrotCropEntity.get<TransformComponent>();
                                 cceTC.m_Position = pihiTC.m_Position;
@@ -164,7 +164,7 @@ void Scene::update_player(float deltaTime) {
                                 s_Crops.push_back(tilePosition);
                                 // Create cabbage crop entity
                                 auto cabbageCropEntity = create_basic("A Cabbage Crop");
-                                auto& cceSC = cabbageCropEntity.get<SpriteComponent>();
+                                auto& cceSC = cabbageCropEntity.emplace<SpriteComponent>();
                                 cceSC.m_Color = { 0.15f, 1.0f, 0.0f, 1.0f };
                                 auto& cceTC = cabbageCropEntity.get<TransformComponent>();
                                 cceTC.m_Position = pihiTC.m_Position;
@@ -187,7 +187,7 @@ void Scene::update_player(float deltaTime) {
                         s_Holes.push_back(tilePosition);
                         // Spawn "hole" entity, lol
                         auto holeEntity = create_basic("A Hole in The Ground");
-                        auto& heSC = holeEntity.get<SpriteComponent>();
+                        auto& heSC = holeEntity.emplace<SpriteComponent>();
                         heSC.m_Color = { 0.9f, 0.55f, 0.4f, 1.0f };
                         auto& heTC = holeEntity.get<TransformComponent>();
                         heTC.m_Position = pihiTC.m_Position;
@@ -209,7 +209,7 @@ void Scene::update_player(float deltaTime) {
                         s_WetHoles.push_back(tilePosition);
                         // Spawn "wet hole" entity (ÔwÔ)
                         auto wetHoleEntity = create_basic("A Hole in The Ground");
-                        auto& wheSC = wetHoleEntity.get<SpriteComponent>();
+                        auto& wheSC = wetHoleEntity.emplace<SpriteComponent>();
                         wheSC.m_Color = { 0.9f, 0.25f, 0.1f, 1.0f };
                         auto& wheTC = wetHoleEntity.get<TransformComponent>();
                         wheTC.m_Position = pihiTC.m_Position;

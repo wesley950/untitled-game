@@ -3,6 +3,7 @@
 //
 
 #include "Scene.hpp"
+#include "Components_Player.hpp"
 #include "Renderer/Renderer.hpp"
 
 void Scene::start() {
@@ -38,19 +39,29 @@ void Scene::update(float deltaTime) {
 }
 
 void Scene::render() {
+    // Set the renderer view position
+    {
+        m_Registry.view<TransformComponent, PlayerComponent>().each([] (auto entity, auto& tc, auto& pc) {
+            Renderer::set_viewport_position(tc.m_Position);
+        });
+    }
+
     Renderer::begin_frame();
     Renderer::prepare();
 
-    // Get the group of render able entities and sort if back-to-front
-    // using the transform's y position...
-    auto visibleEntities = m_Registry.group<TransformComponent, SpriteComponent>();
-    visibleEntities.sort<TransformComponent>([](const TransformComponent &left, const TransformComponent &right) {
-        return left.m_Position.y < right.m_Position.y;
-    });
-    // ...Then submit them.
-    visibleEntities.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
-        Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
-    });
+    // Render the sprites
+    {
+        // Get the group of render able entities and sort if back-to-front
+        // using the transform's y position...
+        auto visibleEntities = m_Registry.group<TransformComponent, SpriteComponent>();
+        visibleEntities.sort<TransformComponent>([](const TransformComponent &left, const TransformComponent &right) {
+            return left.m_Position.y < right.m_Position.y;
+        });
+        // ...Then submit them.
+        visibleEntities.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
+            Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
+        });
+    }
 
     Renderer::present();
 }
@@ -65,40 +76,11 @@ entt::handle Scene::create_basic(const std::string &tag) {
     basic.emplace<TagComponent>(tag);
     basic.emplace<UUIDComponent>();
     basic.emplace<TransformComponent>();
-    basic.emplace<SpriteComponent>();
     return basic;
 }
 
 void Scene::populate() {
     create_player();
-
-    // creates a few static boxes
-    {
-        for (int x = 0; x < 10; x++) {
-            auto staticBox = create_basic();
-            auto &pbc = staticBox.emplace<PhysicsBodyComponent>();
-            auto &pslc = staticBox.emplace<PhysicsShapeListComponent>();
-
-            auto &tc = staticBox.get<TransformComponent>();
-            tc.m_Position.x = (float) x * 1.15f;
-
-            create_body(pbc, tc.m_Position, true);
-
-            if (x % 3 == 0) {
-                add_box_shape(pbc, pslc, b2Vec2(0.5f, 0.5f));
-            }
-            else {
-                add_circle_shape(pbc, pslc, 0.5f);
-            }
-
-            /*
-            pslc.m_ShapeDefs = {{{0.5f, 0.5f}, {0.0f, 0.0f},
-                                 (x % 3 != 0) ? PhysicsShapeListComponent::ShapeType::ST_SPHERE
-                                              : PhysicsShapeListComponent::ShapeType::ST_RECTANGLE}};
-            */
-
-        }
-    }
 }
 
 void Scene::create_body(PhysicsBodyComponent &physicsBody, const glm::vec2& initialPosition, bool fixedPosition) {

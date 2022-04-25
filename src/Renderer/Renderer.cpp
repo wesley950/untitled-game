@@ -97,6 +97,10 @@ void Renderer::set_viewport_size(const glm::vec2 &viewportSize) {
     s_State.viewportSize = viewportSize;
 }
 
+void Renderer::set_viewport_position(const glm::vec2& viewport_position) {
+    s_State.cameraPosition = viewport_position;
+}
+
 void Renderer::calculate_projection_view_matrix() {
     float halfWidth = (s_State.viewportSize.x / s_State.cameraZoom.x) / 2.0f;
     float halfHeight = (s_State.viewportSize.y / s_State.cameraZoom.y) / 2.0f;

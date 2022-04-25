@@ -42,6 +42,7 @@ public:
     static void present();
 
     static void set_viewport_size(const glm::vec2& viewportSize);
+    static void set_viewport_position(const glm::vec2& viewport_position);
 
 private:
     static void calculate_projection_view_matrix();
