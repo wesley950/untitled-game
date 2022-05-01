@@ -14,6 +14,8 @@ public:
     struct Vertex {
         glm::vec3 aPosition;
         glm::vec4 aColor;
+        glm::vec2 aTextureCoordinates;
+        float aTextureSlot;
     };
 
     virtual ~VertexArray() = default;

@@ -64,6 +64,7 @@ void GLFWApplication::init_glfw() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
     m_Window = glfwCreateWindow(1280, 720, "untitled", nullptr, nullptr);
     glfwMakeContextCurrent(m_Window);
     glfwSwapInterval(0);

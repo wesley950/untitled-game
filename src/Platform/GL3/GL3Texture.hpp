@@ -18,7 +18,6 @@ public:
     void set_data(int32_t width, int32_t height, void* pixels) override;
     void release() override;
 
-private:
-    GLuint m_Handle = 0;
+    void load_from_file(const std::string& path) override;
 
 };

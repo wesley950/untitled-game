@@ -18,6 +18,7 @@ public:
 
     void bind() override;
     void set_uniforms(const glm::mat4& projectionView) override;
+    void set_texture_slots(const std::vector<int32_t>& slots) override;
     void release() override;
 
 private:

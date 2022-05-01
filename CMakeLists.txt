@@ -37,7 +37,9 @@ add_executable(farming_game
         ${GENERATED_FILES}
         ${GLFW_PLATFORM_FILES} ${GL3_PLATFORM_FILES}
         ${GLAD_FILES})
-target_include_directories(farming_game PUBLIC src/ ${PROJECT_BINARY_DIR}/src thirdparty)
+target_include_directories(farming_game PUBLIC
+        src/ ${PROJECT_BINARY_DIR}/src
+        thirdparty thirdparty/stb)
 
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

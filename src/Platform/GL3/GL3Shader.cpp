@@ -5,6 +5,9 @@
 #include "GL3Shader.hpp"
 #include "Renderer/VertexArray.hpp"
 
+#include <string>
+#include <cstdio>
+
 #include <glm/gtc/type_ptr.hpp>
 
 void GL3Shader::bind() {
@@ -20,10 +23,27 @@ void GL3Shader::bind() {
     // Color
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexArray::Vertex), (const void*) offsetof(VertexArray::Vertex, aColor));
+
+    // Texture Coordinates
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexArray::Vertex), (const void*) offsetof(VertexArray::Vertex, aTextureCoordinates));
+
+    // Texture Slot
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(VertexArray::Vertex), (const void*) offsetof(VertexArray::Vertex, aTextureSlot));
 }
 
 void GL3Shader::set_uniforms(const glm::mat4& projectionView) {
     glUniformMatrix4fv(m_ProjectionViewUniformLoc, 1, GL_FALSE, glm::value_ptr(projectionView));
+}
+
+void GL3Shader::set_texture_slots(const std::vector<int32_t>& slots) {
+    for (int i = 0;i < slots.size();i++) {
+        std::string uniform_name = std::string("uTextureBindings") + std::to_string(i) + std::string("");
+        GLint uniform_location = glGetUniformLocation(m_Handle, uniform_name.c_str());
+        int32_t value = slots.at(i);
+        glUniform1i(uniform_location, value);
+    }
 }
 
 void GL3Shader::release() {
@@ -51,7 +71,7 @@ GLuint GL3Shader::compile_shader(GLenum type, const char *szCode) {
     if (result == 0) {
         char infoLog[256];
         glGetShaderInfoLog(shader, 256, nullptr, infoLog);
-        // TODO: error log this using spd-log
+        std::printf("%s\n", infoLog);
     }
 
     return shader;

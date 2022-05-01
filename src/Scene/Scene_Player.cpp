@@ -7,6 +7,9 @@
 #include "Components_Player.hpp"
 
 #include "Input/Input.hpp"
+#include "Renderer/Texture.hpp"
+
+#include <memory>
 
 #include <glm/ext.hpp>
 
@@ -20,6 +23,10 @@ void Scene::create_player() {
         sc.m_Size = { 1.0f, 2.0f };
         sc.m_Center = { 0.5f, 1.0f };
         sc.m_Color = { 0.0f, 0.0f, 1.0f, 1.0f };
+        sc.m_Texture = std::shared_ptr<Texture>(create_texture(), [] (Texture* ptr) { delete ptr; });
+        sc.m_Texture->bind(0);
+        sc.m_Texture->load_from_file("assets/textures/char1.png");
+
         auto &pbc = m_Player.emplace<PhysicsBodyComponent>();
         auto &pslc = m_Player.emplace<PhysicsShapeListComponent>();
 

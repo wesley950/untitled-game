@@ -5,9 +5,11 @@
 #pragma once
 
 #include "Core/UUID.hpp"
+#include "Renderer/Texture.hpp"
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <glm/vec2.hpp>
 #include <glm/mat4x4.hpp>
@@ -47,6 +49,7 @@ struct SpriteComponent {
     glm::vec2 m_Size { 1.0f, 1.0f };
     glm::vec2 m_Center { 0.5f, 0.5f };
     glm::vec4 m_Color { 1.0f, 1.0f, 1.0f, 1.0f };
+    std::shared_ptr<Texture> m_Texture;
 };
 
 struct PhysicsBodyComponent {

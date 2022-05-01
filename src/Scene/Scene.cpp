@@ -65,7 +65,7 @@ void Scene::render() {
         });
         // ...Then submit them.
         visibleEntities.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
-            Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color);
+            Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color, sc.m_Texture);
         });
     }
 

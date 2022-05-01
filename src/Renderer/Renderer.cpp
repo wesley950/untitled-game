@@ -35,6 +35,7 @@ void Renderer::begin_frame() {
     calculate_projection_view_matrix();
     s_State.shader->set_uniforms(s_State.projectionViewMat);
     s_State.vertexArray->bind();
+    s_State.m_TextureSlots.clear();
 }
 
 void Renderer::prepare() {
@@ -44,29 +45,57 @@ void Renderer::prepare() {
 }
 
 void Renderer::draw_quad(const glm::mat4 &transform, const glm::vec2 &size, const glm::vec2 &center,
-                         const glm::vec4 &color) {
+                         const glm::vec4 &color, const std::shared_ptr<Texture>& texture) {
+    static const int NULL_TEXTURE = 0;
+
     glm::vec3 offset(
             -(size.x * center.x),
             -(size.y * center.y),
             0.0f
     );
 
+    float texture_slot_attribute = (float)NULL_TEXTURE;
+
+    if (texture) {
+        int32_t bound_slot = NULL_TEXTURE;
+
+        // Check if the texture id is not there
+        for (int i = 0;i < s_State.m_TextureSlots.size();i++) {
+            // If it is, use the slot it was bound at as the vertex attribute
+            if (s_State.m_TextureSlots.at(i) == texture->get_handle()) {
+                bound_slot = i;
+                break;
+            }
+        }
+
+        // Otherwise, push it to the array and use the index of the last element,
+        // then bind the texture to the slot
+        if (bound_slot == NULL_TEXTURE) {
+            bound_slot = s_State.m_TextureSlots.size();
+            s_State.m_TextureSlots.push_back(bound_slot);
+            texture->bind(bound_slot);
+        }
+
+        // Convert the thingamabob
+        texture_slot_attribute = (float)bound_slot+1;
+    }
+
     VertexArray::Vertex vertices[] = {
             {
                     offset,
-                    color
+                    color, { 0.0f, 1.0f }, texture_slot_attribute
             },
             {
                     offset + glm::vec3(size.x, 0.0f, 0.0f),
-                    color
+                    color, { 1.0f, 1.0f }, texture_slot_attribute
             },
             {
                     offset + glm::vec3(size, 0.0f),
-                    color
+                    color, { 1.0f, 0.0f }, texture_slot_attribute
             },
             {
                     offset + glm::vec3(0.0f, size.y, 0.0f),
-                    color
+                    color, { 0.0f, 0.0f }, texture_slot_attribute
             }
     };
 
@@ -89,6 +118,7 @@ void Renderer::draw_quad(const glm::mat4 &transform, const glm::vec2 &size, cons
 }
 
 void Renderer::present() {
+    s_State.shader->set_texture_slots(s_State.m_TextureSlots);
     s_State.vertexArray->set_vertices(s_State.vertices);
     s_State.vertexArray->set_indices(s_State.indices);
     s_State.vertexArray->draw();

@@ -4,6 +4,9 @@
 
 #include "GL3Texture.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
 void GL3Texture::bind(int32_t slot) {
     if (!m_Handle)
         create();
@@ -12,7 +15,7 @@ void GL3Texture::bind(int32_t slot) {
 
     if (m_LastSlot <= -1 || m_LastSlot >= (GL_TEXTURE31 - GL_TEXTURE0))
         m_LastSlot = 0;
-    glActiveTexture(GL_TEXTURE0 + m_LastSlot);
+    glActiveTexture(m_LastSlot);
     glBindTexture(GL_TEXTURE_2D, m_Handle);
 }
 
@@ -27,6 +30,18 @@ void GL3Texture::release() {
     m_Handle = 0;
     m_Width = m_Height = 0;
     m_LastSlot = -1;
+}
+
+void GL3Texture::load_from_file(const std::string& path) {
+    int width = 0, height = 0, channels = 0;
+    auto pixels = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+
+    if (pixels) {
+        set_data(width, height, pixels);
+    }
+    else {
+        std::printf("Could not load texture from \"%s\"...\n", path.c_str());
+    }
 }
 
 void GL3Texture::create() {
