@@ -2,8 +2,7 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_GL3SHADER_HPP
-#define UNTITLED_GL3SHADER_HPP
+#pragma once
 
 #include "Renderer/Shader.hpp"
 #include "Generated/GL3/Shaders.hpp"
@@ -30,6 +29,3 @@ private:
     GLuint m_Handle = 0;
     GLint m_ProjectionViewUniformLoc = -1;
 };
-
-
-#endif //UNTITLED_GL3SHADER_HPP

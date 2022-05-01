@@ -2,8 +2,7 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_GLFWAPPLICATION_HPP
-#define UNTITLED_GLFWAPPLICATION_HPP
+#pragma once
 
 #include "Core/Application.hpp"
 #include "Scene/Scene.hpp"
@@ -27,5 +26,3 @@ private:
     float m_TimeStep = 0.0f;
     Scene* m_Scene = nullptr;
 };
-
-#endif //UNTITLED_GLFWAPPLICATION_HPP

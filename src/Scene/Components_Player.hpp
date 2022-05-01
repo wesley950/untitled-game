@@ -2,8 +2,7 @@
 // Created by wesley on 19/04/22.
 //
 
-#ifndef UNTITLED_COMPONENTS_PLAYER_HPP
-#define UNTITLED_COMPONENTS_PLAYER_HPP
+#pragma once
 
 #include <glm/glm.hpp>
 #include <entt/entt.hpp>
@@ -28,5 +27,3 @@ struct PlayerComponent {
     Tool m_CurrentTool = Tool::HAND;
     Item m_CurrentItem = Item::NONE;
 };
-
-#endif //UNTITLED_COMPONENTS_PLAYER_HPP

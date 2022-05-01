@@ -2,8 +2,7 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_APPLICATION_HPP
-#define UNTITLED_APPLICATION_HPP
+#pragma once
 
 class Application {
 public:
@@ -17,5 +16,3 @@ protected:
 };
 
 Application* create_application();
-
-#endif //UNTITLED_APPLICATION_HPP

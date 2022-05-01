@@ -2,12 +2,12 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_SCENE_HPP
-#define UNTITLED_SCENE_HPP
+#pragma once
 
 #include "Components.hpp"
 
 #include <string>
+#include <unordered_map>
 
 #include <entt/entt.hpp>
 #include <box2d/box2d.h>
@@ -25,8 +25,11 @@ public:
     entt::handle create_basic(const std::string& tag = "Basic Actor");
 
 private:
-    void populate();
+    void load_blueprints();
+    void load_blueprint(const std::string& path);
+    entt::handle get_blueprint(const std::string& name);
 
+    void populate();
     void create_player();
     void update_player(float deltaTime);
 
@@ -36,10 +39,10 @@ private:
 
 private:
     entt::registry m_Registry {};
+    entt::registry m_BlueprintRegistry {};
+    std::unordered_map<std::string, entt::handle> m_Blueprints {};
+
     entt::handle m_Player {};
 
     b2World* m_PhysicsWorld = nullptr;
 };
-
-
-#endif //UNTITLED_SCENE_HPP

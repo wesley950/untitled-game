@@ -55,3 +55,6 @@ target_link_libraries(farming_game EnTT::EnTT)
 set(BOX2D_BUILD_TESTBED OFF CACHE BOOL "" FORCE)
 add_subdirectory(thirdparty/box2d)
 target_link_libraries(farming_game box2d)
+
+add_subdirectory(thirdparty/yaml-cpp)
+target_link_libraries(farming_game yaml-cpp::yaml-cpp)

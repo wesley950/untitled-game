@@ -2,8 +2,7 @@
 // Created by wesley on 16/04/22.
 //
 
-#ifndef UNTITLED_SHADER_HPP
-#define UNTITLED_SHADER_HPP
+#pragma once
 
 #include <glm/mat4x4.hpp>
 
@@ -18,5 +17,3 @@ public:
 };
 
 Shader* create_shader();
-
-#endif //UNTITLED_SHADER_HPP

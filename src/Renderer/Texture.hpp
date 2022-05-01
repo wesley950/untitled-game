@@ -2,8 +2,7 @@
 // Created by wesley on 23/04/22.
 //
 
-#ifndef FARMING_GAME_TEXTURE_HPP
-#define FARMING_GAME_TEXTURE_HPP
+#pragma once
 
 #include <cstdint>
 
@@ -28,5 +27,3 @@ protected:
 };
 
 Texture* create_texture();
-
-#endif //FARMING_GAME_TEXTURE_HPP

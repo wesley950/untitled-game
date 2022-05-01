@@ -2,8 +2,7 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_VERTEXARRAY_HPP
-#define UNTITLED_VERTEXARRAY_HPP
+#pragma once
 
 #include <vector>
 #include <cstdint>
@@ -27,5 +26,3 @@ public:
 };
 
 VertexArray* create_vertex_array();
-
-#endif //UNTITLED_VERTEXARRAY_HPP

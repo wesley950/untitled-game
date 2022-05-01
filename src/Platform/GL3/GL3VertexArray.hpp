@@ -2,8 +2,7 @@
 // Created by wesley on 16/04/22.
 //
 
-#ifndef UNTITLED_GL3VERTEXARRAY_HPP
-#define UNTITLED_GL3VERTEXARRAY_HPP
+#pragma once
 
 #include "Renderer/VertexArray.hpp"
 
@@ -32,6 +31,3 @@ private:
 
     int32_t m_ElementCount = 0;
 };
-
-
-#endif //UNTITLED_GL3VERTEXARRAY_HPP

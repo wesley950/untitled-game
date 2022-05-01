@@ -2,8 +2,7 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_UUID_HPP
-#define UNTITLED_UUID_HPP
+#pragma once
 
 #include <random>
 #include <cstdint>
@@ -18,6 +17,3 @@ public:
 private:
     int64_t m_Value;
 };
-
-
-#endif //UNTITLED_UUID_HPP

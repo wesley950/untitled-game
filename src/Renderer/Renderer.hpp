@@ -2,8 +2,7 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_RENDERER_HPP
-#define UNTITLED_RENDERER_HPP
+#pragma once
 
 #include "Shader.hpp"
 #include "VertexArray.hpp"
@@ -51,6 +50,3 @@ private:
 private:
     static State s_State;
 };
-
-
-#endif //UNTITLED_RENDERER_HPP

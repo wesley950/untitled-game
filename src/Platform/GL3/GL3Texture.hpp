@@ -2,8 +2,7 @@
 // Created by wesley on 23/04/22.
 //
 
-#ifndef FARMING_GAME_GL3TEXTURE_HPP
-#define FARMING_GAME_GL3TEXTURE_HPP
+#pragma once
 
 #include "Renderer/Texture.hpp"
 
@@ -23,6 +22,3 @@ private:
     GLuint m_Handle = 0;
 
 };
-
-
-#endif //FARMING_GAME_GL3TEXTURE_HPP

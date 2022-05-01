@@ -2,8 +2,7 @@
 // Created by wesley on 15/04/22.
 //
 
-#ifndef UNTITLED_COMPONENTS_HPP
-#define UNTITLED_COMPONENTS_HPP
+#pragma once
 
 #include "Core/UUID.hpp"
 
@@ -61,5 +60,3 @@ struct PhysicsShapeListComponent {
 
     PhysicsShapeListComponent() = default;
 };
-
-#endif //UNTITLED_COMPONENTS_HPP

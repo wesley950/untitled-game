@@ -2,8 +2,7 @@
 // Created by wesley on 16/04/22.
 //
 
-#ifndef UNTITLED_INPUT_HPP
-#define UNTITLED_INPUT_HPP
+#pragma once
 
 #include <vector>
 
@@ -66,6 +65,3 @@ private:
 
     static Action s_Actions[ActionName::ACTION_COUNT];
 };
-
-
-#endif //UNTITLED_INPUT_HPP
