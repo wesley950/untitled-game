@@ -39,7 +39,7 @@ public:
 
     static void begin_frame();
     static void prepare();
-    static void draw_quad(const glm::mat4& transform, const glm::vec2& size, const glm::vec2& center, const glm::vec4& color, const std::shared_ptr<Texture>& texture);
+    static void draw_quad(const glm::mat4& transform, const glm::vec2& size, const glm::vec2& center, const glm::vec4& color, const std::shared_ptr<Texture>& texture, const glm::vec2& uv1, const glm::vec2& uv2);
     static void present();
 
     static void set_viewport_size(const glm::vec2& viewportSize);

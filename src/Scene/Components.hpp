@@ -49,7 +49,27 @@ struct SpriteComponent {
     glm::vec2 m_Size { 1.0f, 1.0f };
     glm::vec2 m_Center { 0.5f, 0.5f };
     glm::vec4 m_Color { 1.0f, 1.0f, 1.0f, 1.0f };
+
     std::shared_ptr<Texture> m_Texture;
+    glm::vec2 m_UV1 { 0.0f, 0.0f };
+    glm::vec2 m_UV2 { 1.0f, 1.0f };
+};
+
+struct SpriteAnimatorComponent {
+    struct Animation {
+        struct Frame {
+            int32_t x = 0;
+            int32_t y = 0;
+        };
+
+        std::vector<Frame> m_Frames {};
+        float m_AdvanceSpeed = 1.0f;
+        int32_t m_HorizontalFrames = 1;
+        int32_t m_VerticalFrames = 1;
+    };
+
+    float m_AnimTime = 0.0f;
+    std::shared_ptr<Animation> m_CurrentAnimation;
 };
 
 struct PhysicsBodyComponent {

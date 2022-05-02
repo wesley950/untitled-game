@@ -25,6 +25,27 @@ void Scene::update(float deltaTime) {
         update_player(deltaTime);
     }
 
+    // Tick the sprite animators
+    m_Registry.view<SpriteComponent, SpriteAnimatorComponent>().each([&deltaTime] (auto entity, auto& sc, auto& sac) {
+        if (sac.m_CurrentAnimation) {
+            sac.m_AnimTime += sac.m_CurrentAnimation->m_AdvanceSpeed * deltaTime;
+
+            if (sac.m_AnimTime >= (float)sac.m_CurrentAnimation->m_Frames.size()) {
+                sac.m_AnimTime = 0.0f;
+            }
+
+            int32_t current_frame_idx = (int32_t) sac.m_AnimTime;
+            auto& current_frame = sac.m_CurrentAnimation->m_Frames.at(current_frame_idx);
+            float tile_width = 1.0f / sac.m_CurrentAnimation->m_HorizontalFrames;
+            float tile_height = 1.0f / sac.m_CurrentAnimation->m_VerticalFrames;
+
+            sc.m_UV1.x = tile_width * current_frame.x;
+            sc.m_UV2.x = tile_width * (current_frame.x + 1);
+            sc.m_UV1.y = tile_height * current_frame.y;
+            sc.m_UV2.y = tile_height * (current_frame.y + 1);
+        }
+    });
+
     // Step the physics simulation
     {
         int32 velocityIterations = 6;
@@ -65,7 +86,7 @@ void Scene::render() {
         });
         // ...Then submit them.
         visibleEntities.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
-            Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color, sc.m_Texture);
+            Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color, sc.m_Texture, sc.m_UV1, sc.m_UV2);
         });
     }
 

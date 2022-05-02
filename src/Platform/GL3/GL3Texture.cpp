@@ -33,6 +33,9 @@ void GL3Texture::release() {
 }
 
 void GL3Texture::load_from_file(const std::string& path) {
+    if (!m_Handle)
+        create();
+
     int width = 0, height = 0, channels = 0;
     auto pixels = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 
@@ -47,8 +50,7 @@ void GL3Texture::load_from_file(const std::string& path) {
 void GL3Texture::create() {
     // temp buffer with a checkerboard texture
     unsigned int initialPixels[] = {
-            0x0, 0xff00ffff,
-            0xff00ffff, 0x0
+            0xff0000ff, 0xff00ff00, 0xffff0000, 0xffff00ff
     };
 
     // save the texture for later...

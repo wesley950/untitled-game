@@ -20,23 +20,27 @@ void Scene::create_player() {
 
     {
         auto& sc = m_Player.emplace<SpriteComponent>();
-        sc.m_Size = { 1.0f, 2.0f };
+        sc.m_Size = { 1.0f, 1.0f };
         sc.m_Center = { 0.5f, 1.0f };
-        sc.m_Color = { 0.0f, 0.0f, 1.0f, 1.0f };
+        sc.m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
         sc.m_Texture = std::shared_ptr<Texture>(create_texture(), [] (Texture* ptr) { delete ptr; });
-        sc.m_Texture->bind(0);
         sc.m_Texture->load_from_file("assets/textures/char1.png");
+
+        auto& sac = m_Player.emplace<SpriteAnimatorComponent>();
+        auto test_animation = std::make_shared<SpriteAnimatorComponent::Animation>();
+        test_animation->m_Frames = {
+                { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 }, { 5, 2 }, { 6, 2 }, { 7, 2 }
+        };
+        test_animation->m_AdvanceSpeed = 10;
+        test_animation->m_HorizontalFrames = 8;
+        test_animation->m_VerticalFrames = 49;
+        sac.m_CurrentAnimation = test_animation;
 
         auto &pbc = m_Player.emplace<PhysicsBodyComponent>();
         auto &pslc = m_Player.emplace<PhysicsShapeListComponent>();
 
         create_body(pbc, tc.m_Position, false);
         add_circle_shape(pbc, pslc, 0.5f, b2Vec2(0.0f, -0.5f));
-        /*
-        pslc.m_ShapeDefs = {
-                { {0.5f, 0.0f}, {0.0f, -0.5f}, PhysicsShapeListComponent::ShapeType::ST_SPHERE }
-        };
-         */
     }
 
     // Create the interaction hit indicator

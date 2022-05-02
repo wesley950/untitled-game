@@ -45,7 +45,7 @@ void Renderer::prepare() {
 }
 
 void Renderer::draw_quad(const glm::mat4 &transform, const glm::vec2 &size, const glm::vec2 &center,
-                         const glm::vec4 &color, const std::shared_ptr<Texture>& texture) {
+                         const glm::vec4 &color, const std::shared_ptr<Texture>& texture, const glm::vec2& uv1, const glm::vec2& uv2) {
     static const int NULL_TEXTURE = 0;
 
     glm::vec3 offset(
@@ -83,19 +83,19 @@ void Renderer::draw_quad(const glm::mat4 &transform, const glm::vec2 &size, cons
     VertexArray::Vertex vertices[] = {
             {
                     offset,
-                    color, { 0.0f, 1.0f }, texture_slot_attribute
+                    color, { uv1.x, uv1.y }, texture_slot_attribute
             },
             {
                     offset + glm::vec3(size.x, 0.0f, 0.0f),
-                    color, { 1.0f, 1.0f }, texture_slot_attribute
+                    color, { uv2.x, uv1.y }, texture_slot_attribute
             },
             {
                     offset + glm::vec3(size, 0.0f),
-                    color, { 1.0f, 0.0f }, texture_slot_attribute
+                    color, { uv2.x, uv2.y }, texture_slot_attribute
             },
             {
                     offset + glm::vec3(0.0f, size.y, 0.0f),
-                    color, { 0.0f, 0.0f }, texture_slot_attribute
+                    color, { uv1.x, uv2.y }, texture_slot_attribute
             }
     };
 
