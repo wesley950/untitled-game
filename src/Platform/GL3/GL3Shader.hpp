@@ -5,7 +5,6 @@
 #pragma once
 
 #include "Renderer/Shader.hpp"
-#include "Generated/GL3/Shaders.hpp"
 
 #include <cstdint>
 

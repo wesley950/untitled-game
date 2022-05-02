@@ -39,7 +39,7 @@ void GL3Shader::set_uniforms(const glm::mat4& projectionView) {
 
 void GL3Shader::set_texture_slots(const std::vector<int32_t>& slots) {
     for (int i = 0;i < slots.size();i++) {
-        std::string uniform_name = std::string("uTextureBindings") + std::to_string(i) + std::string("");
+        std::string uniform_name = std::string("uTextureBindings[") + std::to_string(i) + std::string("]");
         GLint uniform_location = glGetUniformLocation(m_Handle, uniform_name.c_str());
         int32_t value = slots.at(i);
         glUniform1i(uniform_location, value);
@@ -78,38 +78,7 @@ void GL3Shader::create() {
     GLuint fragment_shader = compile_shader(GL_FRAGMENT_SHADER, R"(
         #version 330 core
 
-        uniform sampler2D uTextureBindings0;
-        uniform sampler2D uTextureBindings1;
-        uniform sampler2D uTextureBindings2;
-        uniform sampler2D uTextureBindings3;
-        uniform sampler2D uTextureBindings4;
-        uniform sampler2D uTextureBindings5;
-        uniform sampler2D uTextureBindings6;
-        uniform sampler2D uTextureBindings7;
-        uniform sampler2D uTextureBindings8;
-        uniform sampler2D uTextureBindings9;
-        uniform sampler2D uTextureBindings10;
-        uniform sampler2D uTextureBindings11;
-        uniform sampler2D uTextureBindings12;
-        uniform sampler2D uTextureBindings13;
-        uniform sampler2D uTextureBindings14;
-        uniform sampler2D uTextureBindings15;
-        uniform sampler2D uTextureBindings16;
-        uniform sampler2D uTextureBindings17;
-        uniform sampler2D uTextureBindings18;
-        uniform sampler2D uTextureBindings19;
-        uniform sampler2D uTextureBindings20;
-        uniform sampler2D uTextureBindings21;
-        uniform sampler2D uTextureBindings22;
-        uniform sampler2D uTextureBindings23;
-        uniform sampler2D uTextureBindings24;
-        uniform sampler2D uTextureBindings25;
-        uniform sampler2D uTextureBindings26;
-        uniform sampler2D uTextureBindings27;
-        uniform sampler2D uTextureBindings28;
-        uniform sampler2D uTextureBindings29;
-        uniform sampler2D uTextureBindings30;
-        uniform sampler2D uTextureBindings31;
+        uniform sampler2D uTextureBindings[32];
 
         in vec4     vColor;
         in vec2     vTextureCoordinates;
@@ -123,131 +92,131 @@ void GL3Shader::create() {
             int texture_slot = int(vTextureSlot);
             switch (texture_slot) {
                 case 1:
-                oColor *= texture(uTextureBindings0, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[0], vTextureCoordinates);
                 break;
 
                 case 2:
-                oColor *= texture(uTextureBindings1, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[1], vTextureCoordinates);
                 break;
 
                 case 3:
-                oColor *= texture(uTextureBindings2, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[2], vTextureCoordinates);
                 break;
 
                 case 4:
-                oColor *= texture(uTextureBindings3, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[3], vTextureCoordinates);
                 break;
 
                 case 5:
-                oColor *= texture(uTextureBindings4, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[4], vTextureCoordinates);
                 break;
 
                 case 6:
-                oColor *= texture(uTextureBindings5, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[5], vTextureCoordinates);
                 break;
 
                 case 7:
-                oColor *= texture(uTextureBindings6, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[6], vTextureCoordinates);
                 break;
 
                 case 8:
-                oColor *= texture(uTextureBindings7, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[7], vTextureCoordinates);
                 break;
 
                 case 9:
-                oColor *= texture(uTextureBindings8, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[8], vTextureCoordinates);
                 break;
 
                 case 10:
-                oColor *= texture(uTextureBindings9, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[9], vTextureCoordinates);
                 break;
 
                 case 11:
-                oColor *= texture(uTextureBindings10, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[10], vTextureCoordinates);
                 break;
 
                 case 12:
-                oColor *= texture(uTextureBindings11, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[11], vTextureCoordinates);
                 break;
 
                 case 13:
-                oColor *= texture(uTextureBindings12, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[12], vTextureCoordinates);
                 break;
 
                 case 14:
-                oColor *= texture(uTextureBindings13, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[13], vTextureCoordinates);
                 break;
 
                 case 15:
-                oColor *= texture(uTextureBindings14, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[14], vTextureCoordinates);
                 break;
 
                 case 16:
-                oColor *= texture(uTextureBindings15, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[15], vTextureCoordinates);
                 break;
 
                 case 17:
-                oColor *= texture(uTextureBindings16, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[16], vTextureCoordinates);
                 break;
 
                 case 18:
-                oColor *= texture(uTextureBindings17, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[17], vTextureCoordinates);
                 break;
 
                 case 19:
-                oColor *= texture(uTextureBindings18, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[18], vTextureCoordinates);
                 break;
 
                 case 20:
-                oColor *= texture(uTextureBindings19, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[19], vTextureCoordinates);
                 break;
 
                 case 21:
-                oColor *= texture(uTextureBindings20, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[20], vTextureCoordinates);
                 break;
 
                 case 22:
-                oColor *= texture(uTextureBindings21, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[21], vTextureCoordinates);
                 break;
 
                 case 23:
-                oColor *= texture(uTextureBindings22, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[22], vTextureCoordinates);
                 break;
 
                 case 24:
-                oColor *= texture(uTextureBindings23, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[23], vTextureCoordinates);
                 break;
 
                 case 25:
-                oColor *= texture(uTextureBindings24, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[24], vTextureCoordinates);
                 break;
 
                 case 26:
-                oColor *= texture(uTextureBindings25, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[25], vTextureCoordinates);
                 break;
 
                 case 27:
-                oColor *= texture(uTextureBindings26, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[26], vTextureCoordinates);
                 break;
 
                 case 28:
-                oColor *= texture(uTextureBindings27, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[27], vTextureCoordinates);
                 break;
 
                 case 29:
-                oColor *= texture(uTextureBindings28, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[28], vTextureCoordinates);
                 break;
 
                 case 30:
-                oColor *= texture(uTextureBindings29, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[29], vTextureCoordinates);
                 break;
 
                 case 31:
-                oColor *= texture(uTextureBindings30, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[30], vTextureCoordinates);
                 break;
 
                 case 32:
-                oColor *= texture(uTextureBindings31, vTextureCoordinates);
+                oColor *= texture(uTextureBindings[31], vTextureCoordinates);
                 break;
             }
         }

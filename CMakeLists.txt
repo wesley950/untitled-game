@@ -17,8 +17,6 @@ set(SCENE_FILES
         src/Scene/Components.hpp
         src/Scene/Scene.cpp src/Scene/Scene.hpp
         src/Scene/Scene_Player.cpp src/Scene/Components_Player.hpp)
-set(GENERATED_FILES
-        ${PROJECT_BINARY_DIR}/src/Generated/GL3/Shaders.hpp)
 set(GLFW_PLATFORM_FILES
         src/Platform/GLFW/GLFWApplication.cpp src/Platform/GLFW/GLFWApplication.hpp
         src/Platform/GLFW/GLFWCallbacks.hpp src/Platform/GLFW/GLFWCallbacks.cpp)
@@ -31,11 +29,10 @@ set(GLAD_FILES
 add_executable(farming_game
         src/Main.cpp
         ${CORE_FILES} ${INPUT_FILES} ${RENDERER_FILES} ${SCENE_FILES}
-        ${GENERATED_FILES}
         ${GLFW_PLATFORM_FILES} ${GL3_PLATFORM_FILES}
         ${GLAD_FILES})
 target_include_directories(farming_game PUBLIC
-        src/ ${PROJECT_BINARY_DIR}/src
+        src/
         thirdparty thirdparty/stb)
 
 
