@@ -8,6 +8,7 @@
 
 #include "Input/Input.hpp"
 #include "Renderer/Texture.hpp"
+#include "Resource/ResourceManager.hpp"
 
 #include <memory>
 
@@ -27,14 +28,7 @@ void Scene::create_player() {
         sc.m_Texture->load_from_file("data/textures/char1.png");
 
         auto& sac = m_Player.emplace<SpriteAnimatorComponent>();
-        auto test_animation = std::make_shared<SpriteAnimatorComponent::Animation>();
-        test_animation->m_Frames = {
-                { 0, 2 }, { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 }, { 5, 2 }, { 6, 2 }, { 7, 2 }
-        };
-        test_animation->m_AdvanceSpeed = 10;
-        test_animation->m_HorizontalFrames = 8;
-        test_animation->m_VerticalFrames = 49;
-        sac.m_CurrentAnimation = test_animation;
+        sac.m_CurrentAnimation = ResourceManager::get_sprite_animation("human/human_axe_right");
 
         auto &pbc = m_Player.emplace<PhysicsBodyComponent>();
         auto &pslc = m_Player.emplace<PhysicsShapeListComponent>();

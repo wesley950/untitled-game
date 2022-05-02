@@ -17,6 +17,8 @@ set(SCENE_FILES
         src/Scene/Components.hpp
         src/Scene/Scene.cpp src/Scene/Scene.hpp
         src/Scene/Scene_Player.cpp src/Scene/Components_Player.hpp)
+set(RESOURCE_FILES
+        src/Resource/ResourceManager.cpp src/Resource/ResourceManager.hpp)
 set(GLFW_PLATFORM_FILES
         src/Platform/GLFW/GLFWApplication.cpp src/Platform/GLFW/GLFWApplication.hpp
         src/Platform/GLFW/GLFWCallbacks.hpp src/Platform/GLFW/GLFWCallbacks.cpp)
@@ -28,7 +30,7 @@ set(GLAD_FILES
         thirdparty/glad/glad.c thirdparty/glad/glad.h thirdparty/glad/khrplatform.h)
 add_executable(farming_game
         src/Main.cpp
-        ${CORE_FILES} ${INPUT_FILES} ${RENDERER_FILES} ${SCENE_FILES}
+        ${CORE_FILES} ${INPUT_FILES} ${RENDERER_FILES} ${SCENE_FILES} ${RESOURCE_FILES}
         ${GLFW_PLATFORM_FILES} ${GL3_PLATFORM_FILES}
         ${GLAD_FILES})
 target_include_directories(farming_game PUBLIC
@@ -52,5 +54,5 @@ set(BOX2D_BUILD_TESTBED OFF CACHE BOOL "" FORCE)
 add_subdirectory(thirdparty/box2d)
 target_link_libraries(farming_game box2d)
 
-add_subdirectory(thirdparty/yaml-cpp)
-target_link_libraries(farming_game yaml-cpp::yaml-cpp)
+add_subdirectory(thirdparty/json)
+target_link_libraries(farming_game nlohmann_json)

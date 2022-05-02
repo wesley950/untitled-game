@@ -6,14 +6,8 @@
 #include "Components_Player.hpp"
 #include "Renderer/Renderer.hpp"
 
-#include <filesystem>
-
-#include <yaml-cpp/yaml.h>
-
 void Scene::start() {
     m_PhysicsWorld = new b2World(b2Vec2(0.0f, 0.0f));
-
-    //load_blueprints();
 
     // Create the initial entities
     populate();
@@ -104,27 +98,6 @@ entt::handle Scene::create_basic(const std::string &tag) {
     basic.emplace<UUIDComponent>();
     basic.emplace<TransformComponent>();
     return basic;
-}
-
-void Scene::load_blueprints() {
-    for (const auto& entry : std::filesystem::recursive_directory_iterator("assets/blueprints")) {
-        if (entry.is_regular_file()) {
-            load_blueprint(entry.path().string());
-        }
-    }
-}
-
-void Scene::load_blueprint(const std::string& path) {
-    std::printf("Loading blueprint \"%s\"...\n", path.c_str());
-
-}
-
-entt::handle Scene::get_blueprint(const std::string& name) {
-    if (m_Blueprints.count(name)) {
-        return m_Blueprints.at(name);
-    }
-
-    return entt::handle();
 }
 
 void Scene::populate() {

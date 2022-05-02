@@ -25,10 +25,6 @@ public:
     entt::handle create_basic(const std::string& tag = "Basic Actor");
 
 private:
-    void load_blueprints();
-    void load_blueprint(const std::string& path);
-    entt::handle get_blueprint(const std::string& name);
-
     void populate();
     void create_player();
     void update_player(float deltaTime);
@@ -39,9 +35,6 @@ private:
 
 private:
     entt::registry m_Registry {};
-    entt::registry m_BlueprintRegistry {};
-    std::unordered_map<std::string, entt::handle> m_Blueprints {};
-
     entt::handle m_Player {};
 
     b2World* m_PhysicsWorld = nullptr;

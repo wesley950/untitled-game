@@ -32,9 +32,9 @@ def generate_binary_assets() -> None:
     for path, current_directory, files in os.walk("%s/sprite_animations" % (game_resources_directory)):
         for file in files:
             asset_file_path = os.path.join(path, file)
-            target_binary_file_path = os.path.join(game_data_directory, "sprite_animations", file)
-            target_binary_file_path = os.path.splitext(target_binary_file_path)[0] + '.bin'
-            generate_binary_asset(asset_file_path, target_binary_file_path)
+            target_asset_file_path = asset_file_path.replace(game_resources_directory, game_data_directory)
+            target_asset_file_path = os.path.splitext(target_asset_file_path)[0] + ".bin"
+            generate_binary_asset(asset_file_path, target_asset_file_path)
 
 
 def copy_asset(source: str, destination: str) -> None:

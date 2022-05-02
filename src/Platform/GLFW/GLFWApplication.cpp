@@ -7,6 +7,7 @@
 
 #include "Renderer/Renderer.hpp"
 #include "Input/Input.hpp"
+#include "Resource/ResourceManager.hpp"
 
 #include <chrono>
 #include <cassert>
@@ -24,6 +25,7 @@ void GLFWApplication::run() {
 
     Input::init();
     Renderer::init();
+    ResourceManager::init();
 
     m_TimeStep = 1.0f / 60.0f;
     m_Scene = new Scene();
