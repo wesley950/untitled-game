@@ -4,6 +4,7 @@
   <component name="CidrRootsConfiguration">
     <excludeRoots>
       <file path="$PROJECT_DIR$/assets" />
+      <file path="$PROJECT_DIR$/bin" />
       <file path="$PROJECT_DIR$/resources" />
       <file path="$PROJECT_DIR$/thirdparty/box2d/.github" />
       <file path="$PROJECT_DIR$/thirdparty/box2d/docs" />
@@ -32,7 +33,6 @@
       <file path="$PROJECT_DIR$/thirdparty/stb/docs" />
       <file path="$PROJECT_DIR$/thirdparty/stb/tests" />
       <file path="$PROJECT_DIR$/thirdparty/stb/tools" />
-      <file path="$PROJECT_DIR$/tools" />
     </excludeRoots>
   </component>
 </project>

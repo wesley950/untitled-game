@@ -3,9 +3,6 @@ project(farming_game)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Executes the script to "export" the contents of the shader files into a header file
-execute_process(COMMAND python3 ${PROJECT_SOURCE_DIR}/tools/generate_shader_headers.py ${PROJECT_BINARY_DIR})
-
 set(CORE_FILES
         src/Core/Application.hpp src/Core/Application.cpp
         src/Core/UUID.cpp src/Core/UUID.hpp

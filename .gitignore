@@ -1,4 +1,8 @@
 cmake-build-debug
 cmake-build-release
 
-assets/
+# Generated binary file system
+data/
+
+# Binary resources
+*.png

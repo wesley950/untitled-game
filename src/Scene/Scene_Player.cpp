@@ -20,11 +20,11 @@ void Scene::create_player() {
 
     {
         auto& sc = m_Player.emplace<SpriteComponent>();
-        sc.m_Size = { 1.0f, 1.0f };
+        sc.m_Size = { 2.0f, 2.0f };
         sc.m_Center = { 0.5f, 1.0f };
         sc.m_Color = { 1.0f, 1.0f, 1.0f, 1.0f };
         sc.m_Texture = std::shared_ptr<Texture>(create_texture(), [] (Texture* ptr) { delete ptr; });
-        sc.m_Texture->load_from_file("assets/textures/char1.png");
+        sc.m_Texture->load_from_file("data/textures/char1.png");
 
         auto& sac = m_Player.emplace<SpriteAnimatorComponent>();
         auto test_animation = std::make_shared<SpriteAnimatorComponent::Animation>();

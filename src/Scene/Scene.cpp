@@ -13,7 +13,7 @@
 void Scene::start() {
     m_PhysicsWorld = new b2World(b2Vec2(0.0f, 0.0f));
 
-    load_blueprints();
+    //load_blueprints();
 
     // Create the initial entities
     populate();
