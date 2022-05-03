@@ -1,8 +1,0 @@
-{
-    "advance_speed": 10.0,
-    "horizontal_frames": 8,
-    "vertical_frames": 49,
-    "frames": [
-        { "x": 0, "y": 2 }
-    ]
-}

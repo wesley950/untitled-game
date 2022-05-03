@@ -31,6 +31,9 @@ void GL3Shader::bind() {
     // Texture Slot
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(VertexArray::Vertex), (const void*) offsetof(VertexArray::Vertex, aTextureSlot));
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GL3Shader::set_uniforms(const glm::mat4& projectionView) {

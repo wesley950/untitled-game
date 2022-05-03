@@ -6,6 +6,8 @@
     <mapping directory="$PROJECT_DIR$/thirdparty/entt" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/glfw" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/glm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/imgui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/json" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/stb" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/yaml-cpp" vcs="Git" />
   </component>

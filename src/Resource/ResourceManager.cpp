@@ -37,18 +37,27 @@ void ResourceManager::load_sprite_animations() {
                 file_stream.close();
 
                 nlohmann::json json_document = nlohmann::json::from_bson(stream.str());
+                auto& variants_object = json_document["variants"];
                 auto sac_anim = std::make_shared<SpriteAnimatorComponent::Animation>();
 
-                sac_anim->m_AdvanceSpeed = json_document["advance_speed"].get<float>();
-                sac_anim->m_HorizontalFrames = json_document["horizontal_frames"].get<int32_t>();
-                sac_anim->m_VerticalFrames = json_document["vertical_frames"].get<int32_t>();
+                for (auto itr = variants_object.begin();itr != variants_object.end();itr++) {
+                    auto& variant_name = itr.key();
+                    auto& variant_object = itr.value();
 
-                const auto& frames = json_document["frames"];
-                for (const auto& frame : frames) {
-                    sac_anim->m_Frames.push_back({
-                         frame["x"].get<int32_t>(),
-                         frame["y"].get<int32_t>()
-                    });
+                    auto anim_variant = std::make_shared<SpriteAnimatorComponent::Animation::Variant>();
+                    sac_anim->m_Variants[variant_name] = anim_variant;
+
+                    anim_variant->m_AdvanceSpeed = variant_object["advance_speed"].get<float>();
+                    anim_variant->m_HorizontalFrames = variant_object["horizontal_frames"].get<int32_t>();
+                    anim_variant->m_VerticalFrames = variant_object["vertical_frames"].get<int32_t>();
+
+                    auto& frames = variant_object["frames"];
+                    for (const auto& frame : frames) {
+                        anim_variant->m_Frames.push_back({
+                                                                frame["x"].get<int32_t>(),
+                                                                frame["y"].get<int32_t>()
+                                                        });
+                    }
                 }
 
                 auto resource_name = std::filesystem::relative(entry.path(), SPRITE_ANIMATIONS_PATH).replace_extension().string();

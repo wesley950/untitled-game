@@ -5,6 +5,7 @@
 #include "GLFWApplication.hpp"
 #include "GLFWCallbacks.hpp"
 
+#include "Core/Profiler.hpp"
 #include "Renderer/Renderer.hpp"
 #include "Input/Input.hpp"
 #include "Resource/ResourceManager.hpp"
@@ -13,6 +14,9 @@
 #include <cassert>
 
 #include <glad/glad.h>
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_glfw.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
 
 GLFWApplication::GLFWApplication() {
     assert(s_Instance == nullptr);
@@ -35,6 +39,8 @@ void GLFWApplication::run() {
     auto timeAtLastFrame = std::chrono::steady_clock::now();
 
     while (!glfwWindowShouldClose(m_Window)) {
+        PROFILER_CLEAR();
+
         // Must update the input *before* polling again
         Input::update();
         glfwPollEvents();
@@ -44,10 +50,20 @@ void GLFWApplication::run() {
         timeAtLastFrame = now;
         deltaTime = duration.count();
 
-        m_Scene->update(deltaTime);
+        if (!m_Paused) {
+            m_Scene->update(deltaTime * m_TimeScale);
+        }
 
         glClear(GL_COLOR_BUFFER_BIT);
         m_Scene->render();
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        m_Scene->draw_debug_windows(m_ShowPlayerDebugWindow);
+        draw_profiler_results_window();
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(m_Window);
     }
@@ -80,12 +96,50 @@ void GLFWApplication::init_glfw() {
         glfwSetCursorPosCallback(m_Window, cursor_position_callback);
         glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
     }
+
+    // Init ImGUI
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+    ImGui_ImplOpenGL3_Init();
 }
 
 void GLFWApplication::shutdown_glfw() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwDestroyWindow(m_Window);
     glfwTerminate();
     m_Window = nullptr;
+}
+
+void GLFWApplication::draw_profiler_results_window() {
+    ImGui::SetNextWindowPos(ImVec2(20.0f, 20.0f));
+    if (ImGui::Begin("##OPTIONS_WINDOW", nullptr,
+                     ImGuiWindowFlags_AlwaysAutoResize |
+                     ImGuiWindowFlags_NoCollapse |
+                     ImGuiWindowFlags_NoDecoration |
+                     ImGuiWindowFlags_NoMove |
+                     ImGuiWindowFlags_NoNav)) {
+        ImGui::Text("Debug Options");
+        ImGui::DragFloat("Time Scale", &m_TimeScale, 0.01f, 0.001f, 20.0f);
+        ImGui::Checkbox("Pause", &m_Paused);
+        ImGui::Separator();
+        ImGui::Checkbox("Show Profiler", &m_ShowProfiler);
+        ImGui::Checkbox("Show Player Debugger", &m_ShowPlayerDebugWindow);
+    }
+    ImGui::End();
+
+    if (m_ShowProfiler) {
+        if (ImGui::Begin("Profiler")) {
+            for (const auto &result: Profiler::get()->get_results()) {
+                ImGui::Text("%.03f %s", result.m_ElapsedTime, result.m_Name);
+            }
+        }
+        ImGui::End();
+    }
 }
 
 Application* create_application() {

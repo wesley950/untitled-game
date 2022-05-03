@@ -44,6 +44,10 @@ void Input::update() {
     for (bool& jpk : s_KeysJustPressed) {
         jpk = false;
     }
+
+    for (bool& jpmb : s_MouseButtonsJustPressed) {
+        jpmb = false;
+    }
 }
 
 bool Input::is_key_pressed(KeyCode keyCode) {

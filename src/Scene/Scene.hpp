@@ -24,14 +24,18 @@ public:
 
     entt::handle create_basic(const std::string& tag = "Basic Actor");
 
+    void draw_debug_windows(bool show_player_debugger);
 private:
+
     void populate();
     void create_player();
     void update_player(float deltaTime);
-
     void create_body(PhysicsBodyComponent& physicsBody, const glm::vec2& initialPosition, bool fixedPosition);
+
     static void add_box_shape(PhysicsBodyComponent& physicsBody, PhysicsShapeListComponent& shapeList, const b2Vec2& halfExtents, const b2Vec2& center = b2Vec2(0.0f, 0.0f));
     static void add_circle_shape(PhysicsBodyComponent& physicsBody, PhysicsShapeListComponent& shapeList, float radius, const b2Vec2& center = b2Vec2(0.0f, 0.0f));
+
+    void draw_player_debug_windows();
 
 private:
     entt::registry m_Registry {};

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CORE_FILES
         src/Core/Application.hpp src/Core/Application.cpp
         src/Core/UUID.cpp src/Core/UUID.hpp
-        src/Core/MathUtils.hpp)
+        src/Core/MathUtils.hpp src/Core/Timer.hpp src/Core/Timer.cpp src/Core/Profiler.cpp src/Core/Profiler.hpp)
 set(INPUT_FILES
         src/Input/Input.cpp src/Input/Input.hpp)
 set(RENDERER_FILES
@@ -28,14 +28,21 @@ set(GL3_PLATFORM_FILES
         src/Platform/GL3/GL3Texture.cpp src/Platform/GL3/GL3Texture.hpp)
 set(GLAD_FILES
         thirdparty/glad/glad.c thirdparty/glad/glad.h thirdparty/glad/khrplatform.h)
+set(IMGUI_FILES
+        thirdparty/imgui/imconfig.h thirdparty/imgui/imgui.cpp thirdparty/imgui/imgui.h
+        thirdparty/imgui/imgui_demo.cpp thirdparty/imgui/imgui_draw.cpp thirdparty/imgui/imgui_internal.h
+        thirdparty/imgui/imgui_tables.cpp thirdparty/imgui/imgui_widgets.cpp
+        thirdparty/imgui/imstb_rectpack.h thirdparty/imgui/imstb_textedit.h thirdparty/imgui/imstb_truetype.h
+        thirdparty/imgui/backends/imgui_impl_glfw.h thirdparty/imgui/backends/imgui_impl_glfw.cpp
+        thirdparty/imgui/backends/imgui_impl_opengl3.h thirdparty/imgui/backends/imgui_impl_opengl3.cpp)
 add_executable(farming_game
         src/Main.cpp
         ${CORE_FILES} ${INPUT_FILES} ${RENDERER_FILES} ${SCENE_FILES} ${RESOURCE_FILES}
         ${GLFW_PLATFORM_FILES} ${GL3_PLATFORM_FILES}
-        ${GLAD_FILES})
+        ${GLAD_FILES} ${IMGUI_FILES})
 target_include_directories(farming_game PUBLIC
         src/
-        thirdparty thirdparty/stb)
+        thirdparty thirdparty/stb thirdparty/imgui)
 
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)

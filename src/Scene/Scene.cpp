@@ -4,6 +4,8 @@
 
 #include "Scene.hpp"
 #include "Components_Player.hpp"
+
+#include "Core/Profiler.hpp"
 #include "Renderer/Renderer.hpp"
 
 void Scene::start() {
@@ -14,6 +16,8 @@ void Scene::start() {
 }
 
 void Scene::update(float deltaTime) {
+    PROFILER_SCOPE("Scene::update");
+
     // Update the systems of entities
     {
         update_player(deltaTime);
@@ -21,17 +25,17 @@ void Scene::update(float deltaTime) {
 
     // Tick the sprite animators
     m_Registry.view<SpriteComponent, SpriteAnimatorComponent>().each([&deltaTime] (auto entity, auto& sc, auto& sac) {
-        if (sac.m_CurrentAnimation) {
-            sac.m_AnimTime += sac.m_CurrentAnimation->m_AdvanceSpeed * deltaTime;
+        if (sac.m_CurrentVariant) {
+            sac.m_AnimTime += sac.m_CurrentVariant->m_AdvanceSpeed * deltaTime;
 
-            if (sac.m_AnimTime >= (float)sac.m_CurrentAnimation->m_Frames.size()) {
+            if (sac.m_AnimTime >= (float)sac.m_CurrentVariant->m_Frames.size()) {
                 sac.m_AnimTime = 0.0f;
             }
 
             int32_t current_frame_idx = (int32_t) sac.m_AnimTime;
-            auto& current_frame = sac.m_CurrentAnimation->m_Frames.at(current_frame_idx);
-            float tile_width = 1.0f / sac.m_CurrentAnimation->m_HorizontalFrames;
-            float tile_height = 1.0f / sac.m_CurrentAnimation->m_VerticalFrames;
+            auto& current_frame = sac.m_CurrentVariant->m_Frames.at(current_frame_idx);
+            float tile_width = 1.0f / sac.m_CurrentVariant->m_HorizontalFrames;
+            float tile_height = 1.0f / sac.m_CurrentVariant->m_VerticalFrames;
 
             sc.m_UV1.x = tile_width * current_frame.x;
             sc.m_UV2.x = tile_width * (current_frame.x + 1);
@@ -42,6 +46,7 @@ void Scene::update(float deltaTime) {
 
     // Step the physics simulation
     {
+        PROFILER_SCOPE("Scene::update Physics Simulation");
         int32 velocityIterations = 6;
         int32 positionIterations = 2;
         m_PhysicsWorld->Step(deltaTime, velocityIterations, positionIterations);
@@ -49,6 +54,8 @@ void Scene::update(float deltaTime) {
 
     // Copy the transforms from the physics engine, so we can render them
     {
+        PROFILER_SCOPE("Scene::update Copy Transforms from Box2D");
+
         m_Registry.view<PhysicsBodyComponent, TransformComponent>().each([](auto entity, auto &pbc, auto &tc) {
             b2Vec2 bodyPosition = pbc.m_Handle->GetPosition();
 
@@ -60,6 +67,8 @@ void Scene::update(float deltaTime) {
 }
 
 void Scene::render() {
+    PROFILER_SCOPE("Scene::render");
+
     // Set the renderer view position
     {
         m_Registry.view<TransformComponent, PlayerComponent>().each([] (auto entity, auto& tc, auto& pc) {
@@ -72,19 +81,32 @@ void Scene::render() {
 
     // Render the sprites
     {
-        // Get the group of render able entities and sort if back-to-front
-        // using the transform's y position...
         auto visibleEntities = m_Registry.group<TransformComponent, SpriteComponent>();
-        visibleEntities.sort<TransformComponent>([](const TransformComponent &left, const TransformComponent &right) {
-            return left.m_Position.y < right.m_Position.y;
-        });
-        // ...Then submit them.
-        visibleEntities.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
-            Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color, sc.m_Texture, sc.m_UV1, sc.m_UV2);
-        });
+        {
+            PROFILER_SCOPE("Scene::render Y-Sort Sprites");
+            // Get the group of render able entities and sort if back-to-front
+            // using the transform's y position...
+            visibleEntities.sort<TransformComponent>([](const TransformComponent &left, const TransformComponent &right) {
+                return left.m_Position.y < right.m_Position.y;
+            });
+        }
+
+        {
+            PROFILER_SCOPE("Scene::render Submit Sprites");
+            // ...Then submit them.
+            visibleEntities.each([](auto entity, TransformComponent &tc, SpriteComponent &sc) {
+                Renderer::draw_quad(tc.get_transformation(), sc.m_Size, sc.m_Center, sc.m_Color, sc.m_Texture, sc.m_UV1,
+                                    sc.m_UV2);
+            });
+        }
     }
 
     Renderer::present();
+}
+
+void Scene::draw_debug_windows(bool show_player_debugger) {
+    if (show_player_debugger)
+        draw_player_debug_windows();
 }
 
 void Scene::release() {

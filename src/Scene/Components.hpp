@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <memory>
 
 #include <glm/vec2.hpp>
@@ -57,19 +58,23 @@ struct SpriteComponent {
 
 struct SpriteAnimatorComponent {
     struct Animation {
-        struct Frame {
-            int32_t x = 0;
-            int32_t y = 0;
+        struct Variant {
+            struct Frame {
+                int32_t x = 0;
+                int32_t y = 0;
+            };
+
+            std::vector<Frame> m_Frames {};
+            float m_AdvanceSpeed = 1.0f;
+            int32_t m_HorizontalFrames = 1;
+            int32_t m_VerticalFrames = 1;
         };
 
-        std::vector<Frame> m_Frames {};
-        float m_AdvanceSpeed = 1.0f;
-        int32_t m_HorizontalFrames = 1;
-        int32_t m_VerticalFrames = 1;
+        std::unordered_map<std::string, std::shared_ptr<Variant>> m_Variants {};
     };
 
     float m_AnimTime = 0.0f;
-    std::shared_ptr<Animation> m_CurrentAnimation;
+    std::shared_ptr<Animation::Variant> m_CurrentVariant;
 };
 
 struct PhysicsBodyComponent {
