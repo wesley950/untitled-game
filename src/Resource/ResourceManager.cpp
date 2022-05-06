@@ -11,9 +11,11 @@
 
 #include <nlohmann/json.hpp>
 
+std::unordered_map<std::string, std::shared_ptr<Texture>> ResourceManager::s_Textures {};
 std::unordered_map<std::string, std::shared_ptr<SpriteAnimatorComponent::Animation>> ResourceManager::s_SpriteAnimations {};
 
 void ResourceManager::init() {
+    load_textures();
     load_sprite_animations();
 }
 
@@ -21,8 +23,25 @@ void ResourceManager::shutdown() {
 
 }
 
+std::shared_ptr<Texture> ResourceManager::get_texture(const std::string& name) {
+    return s_Textures.at(name);
+}
+
 std::shared_ptr<SpriteAnimatorComponent::Animation> ResourceManager::get_sprite_animation(const std::string& name) {
     return s_SpriteAnimations.at(name);
+}
+
+void ResourceManager::load_textures() {
+    const std::filesystem::path TEXTURES_PATH = std::filesystem::path("data/textures");
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(TEXTURES_PATH)) {
+        if (entry.is_regular_file()) {
+            Texture* texture = create_texture();
+            texture->bind(0);
+            texture->load_from_file(entry.path().string());
+            s_Textures[resource_name(entry.path(), TEXTURES_PATH)] = std::shared_ptr<Texture>(texture, [] (Texture* ptr) { delete ptr; });
+        }
+    }
 }
 
 void ResourceManager::load_sprite_animations() {
@@ -60,9 +79,12 @@ void ResourceManager::load_sprite_animations() {
                     }
                 }
 
-                auto resource_name = std::filesystem::relative(entry.path(), SPRITE_ANIMATIONS_PATH).replace_extension().string();
-                s_SpriteAnimations[resource_name] = sac_anim;
+                s_SpriteAnimations[resource_name(entry.path(), SPRITE_ANIMATIONS_PATH)] = sac_anim;
             }
         }
     }
+}
+
+std::string ResourceManager::resource_name(const std::string& resource_path, const std::string& resource_type_directory) {
+    return std::filesystem::relative(resource_path, resource_type_directory).replace_extension().string();
 }

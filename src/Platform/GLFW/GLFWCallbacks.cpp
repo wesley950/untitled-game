@@ -3,14 +3,20 @@
 //
 
 #include "GLFWCallbacks.hpp"
-#include "Renderer/Renderer.hpp"
+
+#include "Core/MainLoop.hpp"
 #include "Input/Input.hpp"
+#include "Server/RenderingServer.hpp"
 
 #include <glad/glad.h>
 
+void window_close_callback(GLFWwindow* window) {
+    MainLoop::quit(0);
+}
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-    Renderer::set_viewport_size({ (float)width, (float) height });
+    RenderingServer::set_viewport_size({ (float)width, (float)height });
 }
 
 static Input::KeyCode glfwToKC(int glfwKeyCode) {

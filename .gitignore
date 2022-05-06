@@ -1,8 +1,13 @@
 cmake-build-debug
+cmake-build-minsizerel
 cmake-build-release
+cmake-build-relwithdebinfo
 
 # Generated binary file system
-data/
+data
 
 # Binary resources
 *.png
+
+# Garbage
+imgui.ini

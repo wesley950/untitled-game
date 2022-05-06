@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "Components.hpp"
+#include "System/Components.hpp"
 
 #include <memory>
 
-#include <glm/glm.hpp>
-#include <entt/entt.hpp>
+#include "glm/glm/glm.hpp"
+#include "entt/src/entt/entt.hpp"
 
 struct PlayerComponent {
     enum Item {

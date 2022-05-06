@@ -12,12 +12,10 @@
 #include <unordered_map>
 #include <memory>
 
-#include <glm/vec2.hpp>
-#include <glm/mat4x4.hpp>
+#include "glm/glm/vec2.hpp"
+#include "glm/glm/mat4x4.hpp"
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/quaternion.hpp>
-
-#include <box2d/box2d.h>
+#include "glm/glm/gtx/quaternion.hpp"
 
 struct TagComponent {
     std::string m_Tag {};
@@ -77,14 +75,14 @@ struct SpriteAnimatorComponent {
     std::shared_ptr<Animation::Variant> m_CurrentVariant;
 };
 
-struct PhysicsBodyComponent {
-    b2Body* m_Handle = nullptr;
+struct RigidBodyComponent {
+    int32_t m_Body = -1;
 
-    PhysicsBodyComponent() = default;
+    RigidBodyComponent() = default;
 };
 
-struct PhysicsShapeListComponent {
-    std::vector<b2Fixture*> m_ShapeHandles {};
+struct ShapeListComponent {
+    std::vector<int32_t> m_ShapeHandles {};
 
-    PhysicsShapeListComponent() = default;
+    ShapeListComponent() = default;
 };

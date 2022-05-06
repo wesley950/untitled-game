@@ -3,7 +3,7 @@
 //
 
 #include "Input.hpp"
-#include "Renderer/Renderer.hpp"
+#include "Server/RenderingServer.hpp"
 
 #include <functional>
 
@@ -64,7 +64,7 @@ void Input::notify_key_event(KeyCode keyCode, bool pressed) {
 }
 
 glm::vec2 Input::mouse_world_position() {
-    return Renderer::screen_to_world_position(get_cursor_position());
+    return RenderingServer::screen_to_world_position(get_cursor_position());
 }
 
 bool Input::is_mouse_button_pressed(MouseButton button) {

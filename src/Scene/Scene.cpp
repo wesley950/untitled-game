@@ -3,7 +3,7 @@
 //
 
 #include "Scene.hpp"
-#include "Components_Player.hpp"
+#include "System/Components_Player.hpp"
 
 #include "Core/Profiler.hpp"
 #include "Renderer/Renderer.hpp"

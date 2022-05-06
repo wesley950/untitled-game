@@ -3,8 +3,8 @@
 //
 
 #include "Scene.hpp"
-#include "Components.hpp"
-#include "Components_Player.hpp"
+#include "System/Components.hpp"
+#include "System/Components_Player.hpp"
 
 #include "Input/Input.hpp"
 #include "Renderer/Texture.hpp"

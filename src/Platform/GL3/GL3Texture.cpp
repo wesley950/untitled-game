@@ -63,9 +63,6 @@ void GL3Texture::create() {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, (const void*)initialPixels);
     m_Width = 2;
     m_Height = 2;
-    // ...rebind previous texture
-    if (currentTexture)
-        glBindTexture(GL_TEXTURE_2D, currentTexture);
 }
 
 Texture* create_texture() {

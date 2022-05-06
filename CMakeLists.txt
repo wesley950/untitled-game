@@ -6,26 +6,39 @@ set(CMAKE_CXX_STANDARD 17)
 set(CORE_FILES
         src/Core/Application.hpp src/Core/Application.cpp
         src/Core/UUID.cpp src/Core/UUID.hpp
-        src/Core/MathUtils.hpp src/Core/Timer.hpp src/Core/Timer.cpp src/Core/Profiler.cpp src/Core/Profiler.hpp)
+        src/Core/MathUtils.hpp
+        src/Core/Timer.hpp src/Core/Timer.cpp
+        src/Core/Profiler.cpp src/Core/Profiler.hpp
+        src/Core/MainLoop.cpp src/Core/MainLoop.hpp)
 set(INPUT_FILES
         src/Input/Input.cpp src/Input/Input.hpp)
 set(RENDERER_FILES
         src/Renderer/Renderer.cpp src/Renderer/Renderer.hpp
         src/Renderer/VertexArray.cpp src/Renderer/VertexArray.hpp
-        src/Renderer/Shader.cpp src/Renderer/Shader.hpp src/Renderer/Texture.cpp src/Renderer/Texture.hpp)
+        src/Renderer/Shader.cpp src/Renderer/Shader.hpp
+        src/Renderer/Texture.cpp src/Renderer/Texture.hpp)
 set(SCENE_FILES
-        src/Scene/Components.hpp
-        src/Scene/Scene.cpp src/Scene/Scene.hpp
-        src/Scene/Scene_Player.cpp src/Scene/Components_Player.hpp)
+        src/System/Components.hpp)
+set(SERVER_FILES
+        src/Server/RenderingServer.cpp src/Server/RenderingServer.hpp
+        src/Server/DisplayServer.cpp src/Server/DisplayServer.hpp
+        src/Server/PhysicsServer.cpp src/Server/PhysicsServer.hpp)
+set(SYSTEM_FILES
+        src/System/PlayerSystem.cpp src/System/PlayerSystem.hpp
+        src/System/SceneSystem.cpp src/System/SceneSystem.hpp
+        src/System/GraphicsSystem.cpp src/System/GraphicsSystem.hpp)
 set(RESOURCE_FILES
         src/Resource/ResourceManager.cpp src/Resource/ResourceManager.hpp)
+set(BOX2D_PLATFORM_FILES
+        src/Platform/Box2D/Box2DPhysicsServer.cpp)
 set(GLFW_PLATFORM_FILES
-        src/Platform/GLFW/GLFWApplication.cpp src/Platform/GLFW/GLFWApplication.hpp
-        src/Platform/GLFW/GLFWCallbacks.hpp src/Platform/GLFW/GLFWCallbacks.cpp)
+        src/Platform/GLFW/GLFWCallbacks.hpp src/Platform/GLFW/GLFWCallbacks.cpp
+        src/Platform/GLFW/GLFWDisplayServer.cpp)
 set(GL3_PLATFORM_FILES
         src/Platform/GL3/GL3Shader.cpp src/Platform/GL3/GL3Shader.hpp
         src/Platform/GL3/GL3VertexArray.cpp src/Platform/GL3/GL3VertexArray.hpp
-        src/Platform/GL3/GL3Texture.cpp src/Platform/GL3/GL3Texture.hpp)
+        src/Platform/GL3/GL3Texture.cpp src/Platform/GL3/GL3Texture.hpp
+        src/Platform/GL3/GL3RenderingServer.cpp)
 set(GLAD_FILES
         thirdparty/glad/glad.c thirdparty/glad/glad.h thirdparty/glad/khrplatform.h)
 set(IMGUI_FILES
@@ -37,8 +50,8 @@ set(IMGUI_FILES
         thirdparty/imgui/backends/imgui_impl_opengl3.h thirdparty/imgui/backends/imgui_impl_opengl3.cpp)
 add_executable(farming_game
         src/Main.cpp
-        ${CORE_FILES} ${INPUT_FILES} ${RENDERER_FILES} ${SCENE_FILES} ${RESOURCE_FILES}
-        ${GLFW_PLATFORM_FILES} ${GL3_PLATFORM_FILES}
+        ${CORE_FILES} ${INPUT_FILES} ${RENDERER_FILES} ${SCENE_FILES} ${SERVER_FILES} ${SYSTEM_FILES} ${RESOURCE_FILES}
+        ${BOX2D_PLATFORM_FILES} ${GLFW_PLATFORM_FILES} ${GL3_PLATFORM_FILES}
         ${GLAD_FILES} ${IMGUI_FILES})
 target_include_directories(farming_game PUBLIC
         src/
