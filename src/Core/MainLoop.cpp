@@ -45,7 +45,15 @@ void MainLoop::update() {
 }
 
 void MainLoop::shutdown() {
+    // NOTE: must clear the registry before doing anything else because
+    // this will call the "destructor" of components and thus release
+    // any resources (textures, audio files, etc.) that they hold.
+    // Otherwise, this will happen on the "final stages of termination"
+    // of the application, where most of the resources are already on an
+    // invalid state.
 
+    s_Registry = {};
+    ResourceManager::shutdown();
 }
 
 void MainLoop::quit(int32_t exit_code) {

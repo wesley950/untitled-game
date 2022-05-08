@@ -4,8 +4,8 @@
 
 #pragma once
 
+#include "Texture.hpp"
 #include "System/Components.hpp"
-#include "Renderer/Texture.hpp"
 
 #include <unordered_map>
 #include <string>

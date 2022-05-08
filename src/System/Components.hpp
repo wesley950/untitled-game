@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Core/UUID.hpp"
-#include "Renderer/Texture.hpp"
+#include "Resource/Texture.hpp"
 
 #include <string>
 #include <vector>

@@ -4,6 +4,7 @@
 
 #include "RenderingServer.hpp"
 
+// Rendering
 std::vector<RenderingServer::Vertex> RenderingServer::s_VertexData {};
 std::vector<uint32_t> RenderingServer::s_IndexData {};
 int32_t RenderingServer::s_BaseIndex = 0;
@@ -13,6 +14,9 @@ glm::vec2 RenderingServer::s_ViewportSize { 1280.0f, 720.0f };
 glm::vec2 RenderingServer::s_ViewportPosition { 0.0f, 0.0f };
 float RenderingServer::s_ViewportZoom = 64.0f;
 glm::mat4 RenderingServer::s_ProjectionViewMatrix = glm::mat4(1.0f);
+
+// Storage
+int32_t RenderingServer::s_CreatedTextures = 0;
 
 glm::vec2 RenderingServer::screen_to_world_position(const glm::vec2& screen_pos) {
     glm::vec2 normalized_device_coords = {

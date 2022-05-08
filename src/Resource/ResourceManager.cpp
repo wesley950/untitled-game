@@ -20,7 +20,12 @@ void ResourceManager::init() {
 }
 
 void ResourceManager::shutdown() {
-
+    // NOTE: its necessary to shutdown RenderingServer or ResourceManager
+    // so the textures can actually be deleted before the application is
+    // on its final stages of termination because at that point, most (if
+    // not all) static objects are apparently already deconstructed.
+    s_Textures = {};
+    s_SpriteAnimations = {};
 }
 
 std::shared_ptr<Texture> ResourceManager::get_texture(const std::string& name) {
@@ -36,10 +41,8 @@ void ResourceManager::load_textures() {
 
     for (const auto& entry : std::filesystem::recursive_directory_iterator(TEXTURES_PATH)) {
         if (entry.is_regular_file()) {
-            Texture* texture = create_texture();
-            texture->bind(0);
-            texture->load_from_file(entry.path().string());
-            s_Textures[resource_name(entry.path(), TEXTURES_PATH)] = std::shared_ptr<Texture>(texture, [] (Texture* ptr) { delete ptr; });
+            auto texture_ref = std::make_shared<Texture>(entry.path().string());
+            s_Textures[resource_name(entry.path(), TEXTURES_PATH)] = texture_ref;
         }
     }
 }

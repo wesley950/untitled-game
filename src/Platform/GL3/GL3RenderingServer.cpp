@@ -4,6 +4,8 @@
 
 #include "Server/RenderingServer.hpp"
 
+#include <unordered_map>
+
 #include <glm/ext.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -333,7 +335,7 @@ void RenderingServer::shutdown() {
 
 void RenderingServer::submit_quad(const glm::mat4& transform,
                                   const glm::vec2& size, const glm::vec2& center, const glm::vec4& color,
-                                  const glm::vec2& uv1, const glm::vec2& uv2, const std::shared_ptr<Texture>& texture) {
+                                  const glm::vec2& uv1, const glm::vec2& uv2, int32_t texture_handle) {
     static const int NULL_TEXTURE = 0;
 
     glm::vec3 offset(
@@ -344,13 +346,13 @@ void RenderingServer::submit_quad(const glm::mat4& transform,
 
     float texture_slot_attribute = (float)NULL_TEXTURE;
 
-    if (texture) {
+    if (texture_handle) {
         int32_t bound_slot = NULL_TEXTURE;
 
         // Check if texture id is not on the batch already
         for (int i = 0;i < s_TextureSlots.size();i++) {
             // If it is, use the slot it was bound at as the vertex attribute
-            if (s_TextureSlots.at(i) == texture->get_handle()) {
+            if (s_TextureSlots.at(i) == texture_handle) {
                 bound_slot = i;
                 break;
             }
@@ -361,7 +363,7 @@ void RenderingServer::submit_quad(const glm::mat4& transform,
         if (bound_slot == NULL_TEXTURE) {
             bound_slot = s_TextureSlots.size();
             s_TextureSlots.push_back(bound_slot);
-            texture->bind(bound_slot);
+            bind_texture(texture_handle, bound_slot);
         }
 
         // Convert the bound slot so it makes sense in the vertex data
@@ -401,4 +403,38 @@ void RenderingServer::submit_quad(const glm::mat4& transform,
     s_IndexData.push_back(s_BaseIndex + 2);
     s_IndexData.push_back(s_BaseIndex + 3);
     s_BaseIndex += 4;
+}
+
+void RenderingServer::bind_texture(int32_t texture_handle, int32_t slot) {
+    glActiveTexture(GL_TEXTURE0 + slot);
+    glBindTexture(GL_TEXTURE_2D, texture_handle);
+}
+
+static std::unordered_map<int32_t, GLuint> s_TextureObjects {};
+
+int32_t RenderingServer::create_texture() {
+    int32_t texture_handle = ++s_CreatedTextures;
+    GLuint texture_object = 0;
+
+    glGenTextures(1, &texture_object);
+    glBindTexture(GL_TEXTURE_2D, texture_object);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    s_TextureObjects[texture_handle] = texture_object;
+    return texture_handle;
+}
+
+void RenderingServer::set_texture_data(int32_t texture_handle, int32_t width, int32_t height, void* pixels) {
+    GLuint texture_object = s_TextureObjects.at(texture_handle);
+    glBindTexture(GL_TEXTURE_2D, texture_object);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void RenderingServer::destroy_texture(int32_t texture_handle) {
+    GLuint texture_object = s_TextureObjects.at(texture_handle);
+    glDeleteTextures(1, &texture_object);
+    s_TextureObjects.erase(texture_handle);
 }

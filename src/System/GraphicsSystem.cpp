@@ -15,7 +15,6 @@ void GraphicsSystem::init() {
 }
 
 void GraphicsSystem::submit() {
-    // TODO: refactor PhysicsServer as PhysicsSystem and move this into it
     // Copy the transforms from the PhysicsSystem to the Transform components
     MainLoop::get_registry().view<TransformComponent, RigidBodyComponent>().each([] (auto entity, auto& transform_component, auto& rigid_body_component) {
         transform_component.m_Position = PhysicsServer::get_body_position(rigid_body_component.m_Body);
@@ -57,6 +56,6 @@ void GraphicsSystem::submit() {
     renderable_sprites.each([] (auto entity, auto& transform_component, auto& sprite_component) {
         RenderingServer::submit_quad(transform_component.get_transformation(),
                                      sprite_component.m_Size, sprite_component.m_Center, sprite_component.m_Color,
-                                     sprite_component.m_UV1, sprite_component.m_UV2, sprite_component.m_Texture);
+                                     sprite_component.m_UV1, sprite_component.m_UV2, (sprite_component.m_Texture) ? sprite_component.m_Texture->get_handle() : 0);
     });
 }
